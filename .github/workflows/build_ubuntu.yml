@@ -11,16 +11,24 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    # @todo -alternatively run on a docker container which already has dependencies installed.
+    runs-on:  ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-18.04]
+        cuda: [10.1.105]
 
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
     # Investigate apt caching? https://stackoverflow.com/questions/59269850/caching-apt-packages-in-github-actions-workflow
-    - name: install_via_apt
+    - name: install apt dependencies
       run: |
-        sudo apt install -y valgrind
+       echo "OS: ${{ matrix.os }}"
+       echo "CUDA: ${{ matrix.cuda }}"
+
+
 
     - name: configure
       run: |
