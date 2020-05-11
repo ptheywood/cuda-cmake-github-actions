@@ -25,10 +25,17 @@ jobs:
     # Investigate apt caching? https://stackoverflow.com/questions/59269850/caching-apt-packages-in-github-actions-workflow
     - name: install apt dependencies
       run: |
-       echo "OS: ${{ matrix.os }}"
-       echo "CUDA: ${{ matrix.cuda }}"
-
-
+        CUDA_MAJOR = echo ${{matrix.cuda }} | cut -d. -f1
+        CUDA_MINOR = echo ${{matrix.cuda }} | cut -d. -f2
+        CUDA_PATCH = echo ${{matrix.cuda }} | cut -d. -f3
+        CUDA_LONG=$CUDA_MAJOR.$CUDA_MINOR.$CUDA_PATCH"-1"      
+        CUDA_SHORT=$CUDA_MAJOR.$CUDA_MINOR"
+        UBUNTU_NUM={{ matrix.os }}      
+        echo "OS: ${{ matrix.os }}"
+        echo "CUDA: ${{ matrix.cuda }}"
+        echo "CUDA_MAJOR: $CUDA_MAJOR"
+        echo "CUDA_MINOR: $CUDA_MINOR"
+        echo "CUDA_PATCH: $CUDA_PATCH"
 
     - name: configure
       run: |
