@@ -5,8 +5,7 @@ cmake_minimum_required(VERSION VERSION 3.10 FATAL_ERROR)
 
 
 # Name the project and set languages
-project(main CXX)
-# project(main CUDA CXX)
+project(main CUDA CXX)
 
 
 # Set a default build type if not passed
