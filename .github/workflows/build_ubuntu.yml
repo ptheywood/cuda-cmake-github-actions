@@ -47,19 +47,26 @@ jobs:
         echo "::set-env name=CUDA_ROOT::${CUDA_ROOT}"
         echo "::set-env name=PATH::${CUDA_ROOT}/bin:${PATH}"
         echo "::set-env name=LD_LIBRARY_PATH::${CUDA_ROOT}/lib:${LD_LIBRARY_PATH}"
-        nvcc --version
 
     - name: install cpplint
       run: |
         pip3 install cpplint
-        cpplint --version
 
     - name: install cmake ppa
       run: |
         wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | sudo apt-key add -
         sudo apt-add-repository "deb https://apt.kitware.com/ubuntu/ ${UBUNTU_CODENAME} main"
         sudo apt update -qq && sudo apt install -y cmake
+
+    - name: version_check
+      run: |
+        echo $PATH
+        nvcc --version
+        which nvcc
+        cpplint --version
+        which cpplint
         cmake --version
+        which cmake
 
     - name: configure
       run: |
