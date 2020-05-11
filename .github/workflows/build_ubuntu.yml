@@ -28,19 +28,19 @@ jobs:
         echo "::set-env name=CUDA_MAJOR::$(echo "${{ matrix.cuda }}" | cut -d. -f1)"
         echo "::set-env name=CUDA_MINOR::$(echo "${{ matrix.cuda }}" | cut -d. -f2)"
         echo "::set-env name=CUDA_PATCH::$(echo "${{ matrix.cuda }}" | cut -d. -f3)"
-        echo "::set-env name=OS_VERSION::$(echo "${{ matrix.os }}" | cut -d- -f2)"
+        echo "::set-env name=UBUNTU_VERSION::$(echo "${{ matrix.os }}" | tr -d '.\-')"
 
     # Investigate apt caching? https://stackoverflow.com/questions/59269850/caching-apt-packages-in-github-actions-workflow
     # @todo - would this be better in a script?
     - name: install cuda
       run: |
         sudo apt-get install apt-transport-https ca-certificates gnupg software-properties-common wget python3-pip doxygen
-        CUDA_REPO_PKG=cuda-repo-ubuntu${OS_VERSION}_${CUDA_MAJOR}.${CUDA_MINOR}.${CUDA_PATCH}-1_amd64.deb
-        wget http://developer.download.nvidia.com/compute/cuda/repos/ubuntu${OS_VERSION}/x86_64/${CUDA_REPO_PKG}
+        CUDA_REPO_PKG=cuda-repo-{UBUNTU_VERSION}_${CUDA_MAJOR}.${CUDA_MINOR}.${CUDA_PATCH}-1_amd64.deb
+        sudo wget https://developer.download.nvidia.com/compute/cuda/repos/{UBUNTU_VERSION}/x86_64/7fa2af80.pub
+        apt-key add 7fa2af80.pub
+        wget https://developer.download.nvidia.com/compute/cuda/repos/{UBUNTU_VERSION}/x86_64/${CUDA_REPO_PKG}
         sudo dpkg -i ${CUDA_REPO_PKG}
         rm ${CUDA_REPO_PKG}
-        sudo wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu${OS_VERSION}/x86_64/7fa2af80.pub
-        apt-key add 7fa2af80.pub
         sudo apt-get update -qq
         sudo apt-get install -y --no-install-recommends cuda-compiler-${CUDA_MAJOR}-${CUDA_MINOR} cuda-cudart-dev-${CUDA_PACKAGE_VERSION} cuda-curand-dev-${CUDA_MAJOR}-${CUDA_MINOR} cuda-nvrtc-dev-${CUDA_MAJOR}-${CUDA_MINOR}
         CUDA_ROOT=/usr/local/cuda-${CUDA_MAJOR}.${CUDA_MINOR}
