@@ -72,9 +72,10 @@ jobs:
       run: |
         cd build
         make
-    - name: execute
-      run: |
-        cd build
-        ./main
+    # Disabled - cannot execute on github-hosted actions.
+    # - name: execute
+    #   run: |
+    #     cd build
+    #     ./main
 
 
