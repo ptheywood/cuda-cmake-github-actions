@@ -44,7 +44,7 @@ set(SRC_INCLUDE
 )
 
 set(SRC
-    src/main.cpp
+    src/main.cu
 )
 
 set(ALL_SRC
