@@ -17,6 +17,11 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
+    # Investigate apt caching? https://stackoverflow.com/questions/59269850/caching-apt-packages-in-github-actions-workflow
+    - name: install_via_apt
+      run: |
+        sudo apt install -y valgrind
+
     - name: configure
       run: |
         mkdir -p build
