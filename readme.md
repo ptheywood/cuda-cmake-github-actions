@@ -4,6 +4,8 @@ This repo is a very simple CUDA application, used to GitHub Actions as a CI serv
 
 This will **potentially** be expanded to investigate self-hosted runner(s) for running tests locally.
 
+![build_ubuntu](https://github.com/ptheywood/cuda-cmake-github-actions/workflows/build_ubuntu/badge.svg)
+
 
 ## Sample application.
 
