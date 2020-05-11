@@ -30,7 +30,7 @@ jobs:
         CUDA_PATCH=$(echo "${{matrix.cuda }}" | cut -d. -f3)
         CUDA_LONG=$CUDA_MAJOR.$CUDA_MINOR.$CUDA_PATCH"-1"      
         CUDA_SHORT=$CUDA_MAJOR.$CUDA_MINOR
-        UBUNTU_NUM={{ matrix.os }}      
+        UBUNTU_NUM=$(echo "${{ matrix.os }}" | cut -d- -f2)      
         echo "OS: ${{ matrix.os }}"
         echo "CUDA: ${{ matrix.cuda }}"
         echo "CUDA_MAJOR: $CUDA_MAJOR"
