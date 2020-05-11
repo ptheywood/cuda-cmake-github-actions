@@ -50,10 +50,12 @@ jobs:
         nvcc --version
 
     - name: install cpplint
+      run: |
         pip3 install cpplint
         cpplint --version
 
     - name: install cmake ppa
+      run: |
         wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | sudo apt-key add -
         sudo apt-add-repository "deb https://apt.kitware.com/ubuntu/ ${UBUNTU_CODENAME} main"
         sudo apt update -qq && sudo apt install -y cmake
