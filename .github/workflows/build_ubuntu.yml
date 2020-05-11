@@ -42,7 +42,7 @@ jobs:
         sudo dpkg -i ${CUDA_REPO_PKG}
         rm ${CUDA_REPO_PKG}
         sudo apt-get update -qq
-        sudo apt-get install -y --no-install-recommends cuda-compiler-${CUDA_MAJOR}-${CUDA_MINOR} cuda-cudart-dev-${CUDA_PACKAGE_VERSION} cuda-curand-dev-${CUDA_MAJOR}-${CUDA_MINOR} cuda-nvrtc-dev-${CUDA_MAJOR}-${CUDA_MINOR}
+        sudo apt-get install -y --no-install-recommends cuda-compiler-${CUDA_MAJOR}-${CUDA_MINOR} cuda-cudart-dev-${CUDA_MAJOR}-${CUDA_MINOR} cuda-curand-dev-${CUDA_MAJOR}-${CUDA_MINOR} cuda-nvrtc-dev-${CUDA_MAJOR}-${CUDA_MINOR}
         CUDA_ROOT=/usr/local/cuda-${CUDA_MAJOR}.${CUDA_MINOR}
         echo "::set-env name=CUDA_ROOT::${CUDA_ROOT}"
         echo "::set-env name=PATH::${CUDA_ROOT}/bin:${PATH}"
