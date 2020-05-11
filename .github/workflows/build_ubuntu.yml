@@ -22,27 +22,21 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
-    - name: split_version 
-      outputs:
-        CUDA_MAJOR:
-          description: "major cuda version."
-        CUDA_MINOR:
-          description: "minor cuda version"
-        CUDA_PATCH:
-          description: "patch cuda version"
-        OS_VERSION:
-          description: "ubuntu version"
+    - name: split_version
       run: |
         CUDA_MAJOR=$(echo "${{ matrix.cuda }}" | cut -d. -f1)
         CUDA_MINOR=$(echo "${{ matrix.cuda }}" | cut -d. -f2)
         CUDA_PATCH=$(echo "${{ matrix.cuda }}" | cut -d. -f3)
         OS_VERSION=$(echo "${{ matrix.os }}" | cut -d- -f2)
+        echo "::set-env name=CUDA_MAJOR::$CUDA_MAJOR"
+        echo "::set-env name=CUDA_MINOR::$CUDA_MINOR"
+        echo "::set-env name=CUDA_PATCH::$CUDA_PATCH"
+        echo "::set-env name=OS_VERSION::$OS_VERSION"
 
     # Investigate apt caching? https://stackoverflow.com/questions/59269850/caching-apt-packages-in-github-actions-workflow
     # @todo - would this be better in a script?
     - name: install apt dependencies
       run: |
-        
         CUDA_LONG=$CUDA_MAJOR.$CUDA_MINOR.$CUDA_PATCH"-1"      
         CUDA_SHORT=$CUDA_MAJOR.$CUDA_MINOR
         echo "OS: ${{ matrix.os }}"
