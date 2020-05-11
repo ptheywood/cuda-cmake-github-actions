@@ -40,7 +40,7 @@ endif()
 # Define which source files are required for the target executable
 
 set(SRC_INCLUDE
-    include/test.h
+    include/test.cuh
 )
 
 set(SRC

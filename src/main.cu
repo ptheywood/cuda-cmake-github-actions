@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "test.h"
+#include "test.cuh"
 
 
 int main(int argc, char* argv[]){
