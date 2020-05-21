@@ -47,11 +47,11 @@ jobs:
         cmake --version
         which cmake
 
-    - name: configure
-      run: |
-        mkdir -p build
-        cd build
-        cmake .. -G "${{ env.visual_studio }}" -A x64
+    # - name: configure
+    #   run: |
+    #     mkdir -p build
+    #     cd build
+    #     cmake .. -G "${{ env.visual_studio }}" -A x64
 
 
     # - name: compile
