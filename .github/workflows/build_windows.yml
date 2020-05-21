@@ -17,6 +17,12 @@ jobs:
         cuda: [10.2.89]
     env:
       cuda: ${{ matrix.cuda }} 
+      cuda_packages: [
+        nvcc
+        visual_studio_integration
+        curand_dev
+        nvrtc_dev
+      ]
 
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -45,17 +51,12 @@ jobs:
         echo $CUDA_PATH
       shell: bash        
 
-    - name: temp_path_additions
+    - name: returntest
       run: |
-        echo "::set-env name=CUDA_PATH::/C/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.2"
-        echo "::add-path::/C/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.2/bin"
+        $cuda_path=""
+        if($cuda_path.length -eq 0) { return 1}
 
-    - name: check_paths_again
-      run: | 
-        echo $PATH
-        echo $CUDA_PATH
-      shell: bash
-
+    
     # - name: test_nvcc
     #   run: |
     #     echo $PATH

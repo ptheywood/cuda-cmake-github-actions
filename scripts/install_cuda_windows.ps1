@@ -1,9 +1,55 @@
 
+## -------------------
+## Select CUDA version
+## -------------------
 
-# CUDA Version to download and install. @todo - make this be read in from the matrix.
-$CUDA_VERSION_FULL = "10.2.89"
+# Get the cuda version from the environment as env:cuda.
+$CUDA_VERSION_FULL = $env:cuda
+# Make sure CUDA_VERSION_FULL is set and valid, otherwise error.
 
-echo "INNER ENV_CUDA $env:cuda"
+# Validate CUDA version, extracting components via regex
+$cuda_ver_matched = $CUDA_VERSION_FULL -match "^(?<major>[1-9][0-9]*)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)$"
+if(-not $cuda_ver_matched){
+    Write-Output "Invalid CUDA version specified, <major>.<minor>.<patch> required. '$CUDA_VERSION_FULL'."
+    exit 1
+}
+$CUDA_MAJOR=$Matches.major
+$CUDA_MINOR=$Matches.minor
+$CUDA_PATCH=$Matches.patch
+
+
+## ------------------------------------------------
+## Select CUDA packages to install from environment
+## ------------------------------------------------
+
+
+$CUDA_PACKAGES = $env:cuda_packages
+echo "$CUDA_PACKAGES"
+
+# Process the list of packages into a list of packages with the version number. Include version specific replacments?
+
+
+
+# Build list of required cuda packages to be installed. 
+# See https://docs.nvidia.com/cuda/cuda-installation-guide-microsoft-windows/index.html#install-cuda-software for pacakge details. 
+
+# @todo - make this configurable outside the script and therefore be fed in? Although it is CUDA version dependent...
+
+# CUDA < 9.1 had a differnt package name for the compiler.
+$NVCC_PACKAGE_NAME="nvcc"
+if ([version]$CUDA_VERSION_FULL -lt [version]"9.1"){
+    $NVCC_PACKAGE_NAME="compiler"
+}
+# Build string containing list of pacakges. Do not need Display.Driver
+$CUDA_PACKAGES  = "$($NVCC_PACKAGE_NAME)_$($CUDA_MAJOR).$($CUDA_MINOR)"
+$CUDA_PACKAGES += " visual_studio_integration_$($CUDA_MAJOR).$($CUDA_MINOR)"
+# $CUDA_PACKAGES += " curand_dev_$($CUDA_MAJOR).$($CUDA_MINOR)"
+# $CUDA_PACKAGES += " nvrtc_dev_$($CUDA_MAJOR).$($CUDA_MINOR)"
+
+
+## -----------------
+## Prepare download
+## -----------------
 
 # Dictionary of known cuda versions and thier download URLS, which do not follow a consistent pattern :(
 $CUDA_KNOWN_URLS = @{
@@ -19,22 +65,6 @@ $CUDA_KNOWN_URLS = @{
     "10.2.89" = "http://developer.download.nvidia.com/compute/cuda/10.2/Prod/network_installers/cuda_10.2.89_win10_network.exe";
 }
 
-
-## -----------------
-## Prepare Variables
-## -----------------
-
-# Validate CUDA version, extracting components via regex
-$cuda_ver_matched = $CUDA_VERSION_FULL -match "^(?<major>[1-9][0-9]*)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)$"
-if(-not $cuda_ver_matched){
-    Write-Output "Invalid CUDA version specified, <major>.<minor>.<patch> required. '$CUDA_VERSION_FULL'."
-    exit 1
-}
-$CUDA_MAJOR=$Matches.major
-$CUDA_MINOR=$Matches.minor
-$CUDA_PATCH=$Matches.patch
-
-
 # Build CUDA related variables.
 #  If the specified version is in the known addresses, use that one. 
 $CUDA_REPO_PKG_REMOTE=""
@@ -46,23 +76,6 @@ if($CUDA_KNOWN_URLS.containsKey($CUDA_VERSION_FULL)){
     $CUDA_REPO_PKG_REMOTE="http://developer.download.nvidia.com/compute/cuda/$($CUDA_MAJOR).$($CUDA_MINOR)/Prod/network_installers/cuda_$($CUDA_VERSION_FULL)_win10_network.exe"
 }
 $CUDA_REPO_PKG_LOCAL="cuda_$($CUDA_VERSION_FULL)_win10_network.exe"
-
-
-# Build list of required cuda packages to be installed. See https://docs.nvidia.com/cuda/cuda-installation-guide-microsoft-windows/index.html#install-cuda-software for pacakge details. 
-
-# @todo - make this configurable outside the script and therefore be fed in? Although it is CUDA version dependent...
-
-# CUDA < 9.1 had a differnt package name for the compiler.
-$NVCC_PACKAGE_NAME="nvcc"
-if ([version]$CUDA_VERSION_FULL -lt [version]"9.1"){
-    $NVCC_PACKAGE_NAME="compiler"
-}
-# Build string containing list of pacakges. Do not need Display.Driver
-$CUDA_PACKAGES  = "$($NVCC_PACKAGE_NAME)_$($CUDA_MAJOR).$($CUDA_MINOR)"
-$CUDA_PACKAGES += " visual_studio_integration_$($CUDA_MAJOR).$($CUDA_MINOR)"
-# $CUDA_PACKAGES += " curand_dev_$($CUDA_MAJOR).$($CUDA_MINOR)"
-# $CUDA_PACKAGES += " nvrtc_dev_$($CUDA_MAJOR).$($CUDA_MINOR)"
-
 
 
 ## ------------
