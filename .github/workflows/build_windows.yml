@@ -18,10 +18,9 @@ jobs:
           - os: windows-2016
             visual_studio: 2017
             cuda: [9.0.176, 9.2.148]
+      # Do not fail fast - its useful to know if the failure is for a specific version.
       fail-fast: false
-
-10.0.130
-10.1.243
+      
     env:
       cuda: ${{ matrix.cuda }} 
       cuda_packages: "nvcc;visual_studio_integration;curand_dev;nvrtc_dev;"
