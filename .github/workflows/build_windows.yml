@@ -50,11 +50,10 @@ jobs:
 
 
     
-    # - name: test_nvcc
-    #   run: |
-    #     echo $PATH
-    #     nvcc -V
-    #   shell: bash
+    - name: test_nvcc
+      run: |
+        nvcc -V
+      shell: bash
 
 
     # - name: install cpplint
