@@ -53,7 +53,7 @@ $CUDA_PATCH=$Matches.patch
 ## ---------------------------
 # Exit if visual studio is too new for the cuda version.
 $VISUAL_STUDIO = $env:visual_studio.trim()
-$VISUAL_STUDIO_YEAR = $.VISUAL_STUDIO.Substring($VISUAL_STUDIO.Length-4)
+$VISUAL_STUDIO_YEAR = $VISUAL_STUDIO.Substring($VISUAL_STUDIO.Length-4)
 Write-Output "VISUAL_STUDIO_YEAR $($VISUAL_STUDIO_YEAR)"
 if($VISUAL_STUDIO_YEAR.length -ne 0 -and $VISUAL_STUDIO_MIN_CUDA.containsKey($VISUAL_STUDIO_YEAR)){
     $MINIMUM_CUDA_VERSION = $VISUAL_STUDIO_MIN_CUDA[$VISUAL_STUDIO_YEAR]
