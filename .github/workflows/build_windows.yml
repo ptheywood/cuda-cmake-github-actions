@@ -29,7 +29,7 @@ jobs:
 
     - name: Select Visual Studio
       run: |
-        if()
+        echo "$env:visual_studio"
       shell: powershell
 
     - name: Install CUDA
