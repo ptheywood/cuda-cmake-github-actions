@@ -15,8 +15,8 @@ jobs:
       matrix:
         os: [ubuntu-18.04]
         cuda: [9.0.176, 9.2.148, 10.0.130, 10.2.89]
-      env:
-        cuda: ${{ matrix.cuda }}
+    env:
+      cuda: ${{ matrix.cuda }}
 
     steps:
     - uses: actions/checkout@v2
