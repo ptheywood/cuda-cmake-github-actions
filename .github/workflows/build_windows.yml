@@ -30,16 +30,25 @@ jobs:
     - name: install_cuda
       run: |
         .\scripts\install_cuda_windows.ps1
-        Write-Output $env:PATH
+        Write-Output $env:CUDA_PATH
       shell: powershell
 
     # - name: temp_path_additions
     #   run: |
     #     echo "::add-path::/C/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.2/bin"
 
-
-    - name: test_nvcc
-      run: |
+    - name: check_path
+      run: | 
         echo $PATH
-        nvcc -V
       shell: bash
+
+    - name: check_cuda_path
+      run: | 
+        echo $CUDA_PATH
+      shell: bash
+
+    # - name: test_nvcc
+    #   run: |
+    #     echo $PATH
+    #     nvcc -V
+    #   shell: bash

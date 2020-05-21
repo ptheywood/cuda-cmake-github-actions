@@ -70,24 +70,24 @@ $CUDA_PACKAGES  = "$($NVCC_PACKAGE_NAME)_$($CUDA_MAJOR).$($CUDA_MINOR)"
 ## ------------
 
 # Get CUDA network installer
-Write-Output "Downloading CUDA Network Installer for $($CUDA_VERSION_FULL) from: $($CUDA_REPO_PKG_REMOTE)"
-Invoke-WebRequest $CUDA_REPO_PKG_REMOTE -OutFile $CUDA_REPO_PKG_LOCAL | Out-Null
-if(Test-Path -Path $CUDA_REPO_PKG_LOCAL){
-    Write-Output "Downloading Complete"
-} else {
-    Write-Output "Error: Failed to download $($CUDA_REPO_PKG_LOCAL) from $($CUDA_REPO_PKG_REMOTE)"
-    exit 1
-}
+# Write-Output "Downloading CUDA Network Installer for $($CUDA_VERSION_FULL) from: $($CUDA_REPO_PKG_REMOTE)"
+# Invoke-WebRequest $CUDA_REPO_PKG_REMOTE -OutFile $CUDA_REPO_PKG_LOCAL | Out-Null
+# if(Test-Path -Path $CUDA_REPO_PKG_LOCAL){
+#     Write-Output "Downloading Complete"
+# } else {
+#     Write-Output "Error: Failed to download $($CUDA_REPO_PKG_LOCAL) from $($CUDA_REPO_PKG_REMOTE)"
+#     exit 1
+# }
 
-# Invoke silent install of CUDA (via network installer)
-Write-Output "Installing CUDA $($CUDA_VERSION_FULL) Compiler and Runtime"
-Start-Process -Wait -FilePath .\"$($CUDA_REPO_PKG_LOCAL)" -ArgumentList "-s $($CUDA_PACKAGES)"
+# # Invoke silent install of CUDA (via network installer)
+# Write-Output "Installing CUDA $($CUDA_VERSION_FULL) Compiler and Runtime"
+# Start-Process -Wait -FilePath .\"$($CUDA_REPO_PKG_LOCAL)" -ArgumentList "-s $($CUDA_PACKAGES)"
 
-# Check the return status of the CUDA installer.
-if ($? -eq $false) {
-    Write-Output "Error: CUDA installer reported error. $($LASTEXITCODE)"
-    exit 1 
-}
+# # Check the return status of the CUDA installer.
+# if ($? -eq $false) {
+#     Write-Output "Error: CUDA installer reported error. $($LASTEXITCODE)"
+#     exit 1 
+# }
 
 # @todo - set environment variables like path.
 
