@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         include:
-          # cuda: [9.0.176, 9.2.148, 10.0.130, 10.1.243, 10.2.89]
+          os: [windows-2019]
           cuda: [9.0.176, 10.2.89]
           - os: windows-2019
             visual_studio: 2019
