@@ -105,4 +105,6 @@ $env:PATH = "$($PATH_CUDA_PATH)$($env:PATH)"
 [Environment]::SetEnvironmentVariable("PATH", $env:PATH, [System.EnvironmentVariableTarget]::Machine)
 # Note that these update the registry, and do not effect the current session until a restart.
 
+nvcc -V
+
 Write-Host "Installation Complete!"
