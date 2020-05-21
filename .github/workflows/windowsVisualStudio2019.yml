@@ -1,5 +1,5 @@
-name: WindowsVisualStudio2017
-# CUDA 9.0+ for VS2017 
+name: WindowsVisualStudio2019
+# CUDA 10.1 for VS2019
 
 on:
   push:
@@ -9,13 +9,13 @@ on:
 
 jobs:
   build:
-    runs-on:  windows-2016
+    runs-on:  windows-2019
     strategy:
       fail-fast: false
       matrix:
-        cuda: [9.0.176, 9.2.148, 10.0.130, 10.2.89]
+        cuda: [10.1.243, 10.2.89]
     env:
-      visual_studio: "Visual Studio 15 2017"
+      visual_studio: "Visual Studio 16 2019"
       cuda: ${{ matrix.cuda }} 
 
     steps:
