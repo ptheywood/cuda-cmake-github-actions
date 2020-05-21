@@ -2,9 +2,9 @@ name: WindowsVisualStudio2017
 
 on:
   push:
-    branches: [ windows ]
+    branches: [ master ]
   pull_request:
-    branches: [ windows ]
+    branches: [ master ]
 
 jobs:
   build:
@@ -12,7 +12,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        cuda: [9.0.176, 10.0.130]
+        # cuda: [9.0.176, 10.0.130]
+        cuda: [10.0.130]
 
     env:
       visual_studio: "Visual Studio 15 2017"
@@ -36,6 +37,13 @@ jobs:
     - name: Install cpplint
       run: |
         python -m pip install --upgrade cpplint
+
+    - name: nvcc -V
+      run: |
+        echo $PATH
+        echo $CUDA_PATH
+        nvcc -V
+      shell: bash
 
     - name: Configure CMake
       run: |
