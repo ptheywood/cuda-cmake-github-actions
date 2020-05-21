@@ -34,6 +34,8 @@ jobs:
       run: |
         echo "env.cuda ${{ env.cuda }}"
         .\scripts\install_cuda_windows.ps1
+        # Abort if the script errored
+        if (!$?) { exit 1 }
         # Set paths for subsequent steps, using the environment variable set by the script.
         echo "::set-env name=CUDA_PATH::$env:CUDA_PATH"
         echo "::add-path::$env:CUDA_PATH/bin"
@@ -44,22 +46,8 @@ jobs:
       run: | 
         echo $PATH
         echo $CUDA_PATH
-      shell: bash        
+      shell: bash
 
-    - name: returntest
-      run: |
-        $cuda_path=""
-        if($cuda_path.length -eq 0) { return 1}
-
-    - name: exit_test_0
-      run: |
-        $cuda_path=""
-        if($cuda_path.length -eq 0) { exit 0}
-
-    - name: exit_test_1
-      run: |
-        $cuda_path=""
-        if($cuda_path.length -eq 0) { exit 1}
 
     
     # - name: test_nvcc
@@ -67,3 +55,30 @@ jobs:
     #     echo $PATH
     #     nvcc -V
     #   shell: bash
+
+
+    # - name: install cpplint
+    #   run: |
+    #     pip3 install cpplint
+    #     echo "::set-env name=PATH::$HOME/.local/bin:${PATH}"
+
+    # - name: version_check
+    #   run: |
+    #     echo $PATH
+    #     nvcc --version
+    #     which nvcc
+    #     cpplint --version
+    #     which cpplint
+    #     cmake --version
+    #     which cmake
+
+    # - name: configure
+    #   run: |
+    #     mkdir -p build
+    #     cd build
+    #     cmake ..
+
+    # - name: compile
+    #   run: |
+    #     make -j 2
+    #   working-directory: build

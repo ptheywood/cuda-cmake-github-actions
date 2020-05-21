@@ -37,8 +37,8 @@ $package_list = $CUDA_PACKAGES_IN.Split($SEPARATORS, [System.StringSplitOptions]
 echo $package_list
 
 $CUDA_PACKAGES_STRING=""
-Foreach ($package in $CUDA_PACKAGES_IN) {
-
+Foreach ($package in $package_list) {
+    echo "$package"
     # Make sure the correct package name is used for nvcc.
     if($package -eq "nvcc" -and [version]$CUDA_VERSION_FULL -lt [version]"9.1"){
         $package="compiler"
