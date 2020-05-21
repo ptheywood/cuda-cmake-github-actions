@@ -2,7 +2,7 @@ name: WindowsVisualStudio2017
 
 on:
   push:
-    branches: [ master ]
+    branches: [ windows ]
   pull_request:
     branches: [ master ]
 
@@ -51,7 +51,8 @@ jobs:
         mkdir -p build
         cd build
         cmake .. -G "${{ env.visual_studio }}" -A x64
-        cat 
+        cat CMakeFiles/CMakeOutput.log
+        cat CMakeFiles/CMakeError.log
       shell: bash
 
 
