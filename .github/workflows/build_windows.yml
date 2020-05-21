@@ -12,15 +12,15 @@ jobs:
     strategy:
       matrix:
         include:
+          # cuda: [9.0.176, 9.2.148, 10.0.130, 10.1.243, 10.2.89]
+          cuda: [9.0.176, 10.2.89]
           - os: windows-2019
             visual_studio: 2019
-            cuda: [10.0.130, 10.1.243, 10.2.89]
           - os: windows-2016
             visual_studio: 2017
-            cuda: [9.0.176, 9.2.148]
       # Do not fail fast - its useful to know if the failure is for a specific version.
       fail-fast: false
-      
+
     env:
       cuda: ${{ matrix.cuda }} 
       cuda_packages: "nvcc;visual_studio_integration;curand_dev;nvrtc_dev;"
