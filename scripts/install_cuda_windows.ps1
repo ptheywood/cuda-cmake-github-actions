@@ -108,8 +108,8 @@ $env:PATH = "$($PATH_CUDA_PATH)$($env:PATH)"
 nvcc -V
 
 # Add to github actions.
-echo "::add-path::${$CUDA_PATH}\bin"
-echo "::add-path::${$CUDA_PATH}\libnvvp"
-echo "::set-env name=CUDA_PATH::${$CUDA_PATH}"
+Write-Host "::add-path::${$CUDA_PATH}\bin"
+Write-Host "::add-path::${$CUDA_PATH}\libnvvp"
+Write-Host "::set-env name=CUDA_PATH::${$CUDA_PATH}"
 
 Write-Host "Installation Complete!"
