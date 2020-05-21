@@ -82,8 +82,6 @@ Foreach ($package in $package_list) {
 
 }
 
-
-exit 0
 ## -----------------
 ## Prepare download
 ## -----------------

@@ -1,4 +1,4 @@
-name: windows_vs2017
+name: WindowsVisualStudio2017
 
 on:
   push:
@@ -12,12 +12,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Multiple cuda versions
-        cuda: [9.0.176, 10.0.130, 10.2.89]
+        cuda: [9.0.176, 10.0.130]
 
     env:
-      cuda: ${{ matrix.cuda }} 
       visual_studio: "Visual Studio 15 2017"
+      cuda: ${{ matrix.cuda }} 
 
     steps:
 
@@ -34,30 +33,17 @@ jobs:
         echo "::add-path::$env:CUDA_PATH/bin"
       shell: powershell
 
-    - name: install cpplint
+    - name: Install cpplint
       run: |
         python -m pip install --upgrade cpplint
 
-    - name: cpplint version
+    - name: Configure CMake
       run: |
-        cpplint --version
+        mkdir -p build
+        cd build
+        cmake .. -G "${{ env.visual_studio }}" -A x64
 
-    - name: cmake version
+    - name: Build
       run: |
-        cmake --version
-
-    - name: nvcc version
-      run: |
-        nvcc -V
-
-    # - name: configure
-    #   run: |
-    #     mkdir -p build
-    #     cd build
-    #     cmake .. -G "${{ env.visual_studio }}" -A x64
-
-
-    # - name: compile
-    #   run: |
-    #     make -j 2
-    #   working-directory: build
+        make -j 2
+      working-directory: build
