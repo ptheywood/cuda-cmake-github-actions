@@ -107,6 +107,7 @@ $env:PATH = "$($PATH_CUDA_PATH)$($env:PATH)"
 
 nvcc -V
 
+Write-host "This should be adding to the path? and env? ${$CUDA_PATH}"
 # Add to github actions.
 Write-Host "::add-path::${$CUDA_PATH}\bin"
 Write-Host "::add-path::${$CUDA_PATH}\libnvvp"
