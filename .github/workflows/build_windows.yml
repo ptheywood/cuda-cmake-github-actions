@@ -17,12 +17,7 @@ jobs:
         cuda: [10.2.89]
     env:
       cuda: ${{ matrix.cuda }} 
-      cuda_packages: [
-        nvcc
-        visual_studio_integration
-        curand_dev
-        nvrtc_dev
-      ]
+      cuda_packages: "nvcc;visual_studio_integration;curand_dev;nvrtc_dev;"
 
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
