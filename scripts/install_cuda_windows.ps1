@@ -71,7 +71,7 @@ $VISUAL_STUDIO_YEAR = $VISUAL_STUDIO.Substring($VISUAL_STUDIO.Length-4)
 ## ------------------------------------------------
 
 $CUDA_PACKAGES = ""
-Foreach ($package in $package_list) {
+Foreach ($package in $CUDA_PACKAGES_IN) {
     # Make sure the correct package name is used for nvcc.
     if($package -eq "nvcc" -and [version]$CUDA_VERSION_FULL -lt [version]"9.1"){
         $package="compiler"
@@ -81,7 +81,7 @@ Foreach ($package in $package_list) {
     $CUDA_PACKAGES += " $($package)_$($CUDA_MAJOR).$($CUDA_MINOR)"
 
 }
-
+echo "$($CUDA_PACKAGES)"
 ## -----------------
 ## Prepare download
 ## -----------------
