@@ -38,14 +38,17 @@ jobs:
       run: |
         python -m pip install --upgrade cpplint
 
-    - name: version_check
+    - name: cpplint version
       run: |
         cpplint --version
-        which cpplint
+
+    - name: cmake version
+      run: |
         cmake --version
-        which cmake
-        nvcc --version
-        which nvcc
+
+    - name: nvcc version
+      run: |
+        nvcc -V
 
     # - name: configure
     #   run: |
