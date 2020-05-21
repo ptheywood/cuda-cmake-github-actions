@@ -28,7 +28,9 @@ jobs:
 
 
     - name: install_cuda
-      run: .\scripts\install_cuda_windows.ps1
+      run: |
+        .\scripts\install_cuda_windows.ps1
+        Write-Output $env:PATH
       shell: powershell
 
     # - name: temp_path_additions
