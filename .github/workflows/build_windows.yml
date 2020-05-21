@@ -21,7 +21,7 @@ jobs:
     env:
       cuda: ${{ matrix.cuda }} 
       cuda_packages: "nvcc;visual_studio_integration;curand_dev;nvrtc_dev;"
-      visual_studio: {{ matrix.visual_studio }}
+      visual_studio: ${{ matrix.visual_studio }}
 
     steps:
 
