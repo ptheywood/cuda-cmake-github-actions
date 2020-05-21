@@ -3,9 +3,9 @@ name: build_windows
 # Triggered on push/pr against master.
 on:
   push:
-    branches: [ master ]
+    branches: [ windows ]
   pull_request:
-    branches: [ master ]
+    branches: [ windows ]
 
 jobs:
   build:
