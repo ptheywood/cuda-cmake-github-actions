@@ -124,9 +124,12 @@ if (!$?) {
 
 # Store the CUDA_PATH in the environment for the current session, to be forwarded in the action.
 $CUDA_PATH = "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v$($CUDA_MAJOR).$($CUDA_MINOR)"
+$CUDA_PATH_VX_Y = "CUDA_PATH_V$($CUDA_MAJOR)_$($CUDA_MINOR)" 
 # Set environmental variables in this session
-Write-Output "CUDA_PATH $($CUDA_PATH)"
 $env:CUDA_PATH = "$($CUDA_PATH)"
+$env:CUDA_PATH_VX_Y = "$($CUDA_PATH_VX_Y)"
+Write-Output "CUDA_PATH $($CUDA_PATH)"
+Write-Output "CUDA_PATH_VX_Y $($CUDA_PATH_VX_Y)"
 
 # PATH needs updating elsewhere, anything in here won't persist.
 # Append $CUDA_PATH/bin to path.
