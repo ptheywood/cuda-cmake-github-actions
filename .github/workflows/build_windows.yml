@@ -26,3 +26,11 @@ jobs:
         echo "${{ matrix.os }}"
         echo "${{ matrix.cuda }}"
 
+
+    - name: install_cuda
+      run: .\scripts\install_cuda_windows.ps1
+      shell: powershell
+
+    - name: test_nvcc
+      run: |
+        nvcc -V
