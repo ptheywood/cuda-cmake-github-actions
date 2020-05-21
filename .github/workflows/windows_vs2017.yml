@@ -40,12 +40,12 @@ jobs:
 
     - name: version_check
       run: |
-        nvcc --version
-        which nvcc
         cpplint --version
         which cpplint
         cmake --version
         which cmake
+        nvcc --version
+        which nvcc
 
     # - name: configure
     #   run: |
