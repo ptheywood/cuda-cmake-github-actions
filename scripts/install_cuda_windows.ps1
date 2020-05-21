@@ -82,7 +82,7 @@ Foreach ($package in $package_list) {
 
 }
 
-exit 1
+exit 0
 
 ## -----------------
 ## Prepare download
