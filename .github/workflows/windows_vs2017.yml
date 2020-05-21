@@ -17,7 +17,7 @@ jobs:
 
     env:
       cuda: ${{ matrix.cuda }} 
-      visual_studio: 2017
+      visual_studio: "Visual Studio 15 2017"
 
     steps:
 
@@ -34,38 +34,24 @@ jobs:
         echo "::add-path::$env:CUDA_PATH/bin"
       shell: powershell
 
-    - name: Check Paths
-      run: | 
-        echo $PATH
-        echo $CUDA_PATH
-      shell: bash
-    
-    # - name: Test NVCC
-    #   run: |
-    #     nvcc -V
-    #   shell: bash
+    - name: install cpplint
+      run: |
+        python -m pip install --upgrade cpplint
 
+    - name: version_check
+      run: |
+        nvcc --version
+        which nvcc
+        cpplint --version
+        which cpplint
+        cmake --version
+        which cmake
 
-    # - name: install cpplint
-    #   run: |
-    #     pip3 install cpplint
-    #     # echo "::add-path::$HOME/.local/bin:${PATH}"
-
-    # - name: version_check
-    #   run: |
-    #     nvcc --version
-    #     which nvcc
-    #     cpplint --version
-    #     which cpplint
-    #     cmake --version
-    #     which cmake
-
-    # - name: configure
-    #   run: |
-    #     mkdir -p build
-    #     cd build
-    #     cmake .. -G "Visual Studio 15 2017" -A x64
-    #     cmake .. -G "Visual Studio 16 2019" -A x64
+    - name: configure
+      run: |
+        mkdir -p build
+        cd build
+        cmake .. -G "${{ env.visual_studio }}" -A x64
 
 
     # - name: compile
