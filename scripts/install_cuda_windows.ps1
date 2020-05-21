@@ -44,7 +44,7 @@ $CUDA_PATCH=$Matches.patch
 ## Visual studio support check
 ## ---------------------------
 # Exit if visual studio is too new for the cuda version.
-$VISUAL_STUDIO_YEAR=env.visual_studio
+$VISUAL_STUDIO_YEAR = $env:visual_studio
 if($VISUAL_STUDIO_YEAR.length -ne 0 -and $VISUAL_STUDIO_MIN_CUDA.containsKey($VISUAL_STUDIO_YEAR)){
     $MINIMUM_CUDA_VERSION = $VISUAL_STUDIO_MIN_CUDA[$VISUAL_STUDIO_YEAR]
     if ([version]$CUDA_VERSION_FULL -lt [version]$MINIMUM_CUDA_VERSION) {
