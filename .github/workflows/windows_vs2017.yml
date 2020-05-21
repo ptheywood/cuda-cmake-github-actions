@@ -8,25 +8,16 @@ on:
 
 jobs:
   build:
-    runs-on:  ${{ matrix.os }}
+    runs-on:  windows-2016
     strategy:
+      fail-fast: false
       matrix:
-        # Just one OS
-        os: windows-2016
         # Multiple cuda versions
         cuda: [9.0.176, 10.0.130, 10.2.89]
-        # Explicitly add the visual studio version based on the os.
-        include:
-          - os: windows-2019
-            visual_studio: 2019
-          - os: windows-2016
-            visual_studio: 2017
-      # Do not fail fast - its useful to know if the failure is for a specific version.
-      fail-fast: false
 
     env:
       cuda: ${{ matrix.cuda }} 
-      visual_studio: ${{ matrix.visual_studio }}
+      visual_studio: 2017
 
     steps:
 
