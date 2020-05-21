@@ -38,6 +38,7 @@ jobs:
 
     - name: test_nvcc
       run: |
+        echo $PATH
         ls /C/Program\ Files/NVIDIA\ GPU\ Computing\ Toolkit/CUDA/v10.2/bin/nvcc
         /C/Program\ Files/NVIDIA\ GPU\ Computing\ Toolkit/CUDA/v10.2/bin/nvcc -V
         nvcc -V
