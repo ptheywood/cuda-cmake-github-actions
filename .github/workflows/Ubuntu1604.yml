@@ -1,5 +1,5 @@
-name: Ubuntu1804
-# Ubuntu 18.04 with CUDA 9.0, 9.2, 10.0 and 10.2
+name: Ubuntu1604
+# Ubuntu 16.04 with CUDA 9.0, 9.2, 10.0 and 10.2
 
 on:
   push:
