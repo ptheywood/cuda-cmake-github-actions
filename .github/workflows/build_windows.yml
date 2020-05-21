@@ -51,6 +51,16 @@ jobs:
         $cuda_path=""
         if($cuda_path.length -eq 0) { return 1}
 
+    - name: exit_test_0
+      run: |
+        $cuda_path=""
+        if($cuda_path.length -eq 0) { exit 0}
+
+    - name: exit_test_1
+      run: |
+        $cuda_path=""
+        if($cuda_path.length -eq 0) { exit 1}
+
     
     # - name: test_nvcc
     #   run: |

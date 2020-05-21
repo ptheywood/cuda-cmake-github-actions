@@ -23,10 +23,34 @@ $CUDA_PATCH=$Matches.patch
 ## ------------------------------------------------
 
 
-$CUDA_PACKAGES = $env:cuda_packages
-echo "$CUDA_PACKAGES"
+$CUDA_PACKAGES_IN = $env:cuda_packages
+echo "$CUDA_PACKAGES_IN"
+# If no packages were provided, error.
+if ($CUDA_PACKAGES_IN.length -eq 0){
+    Write-Output "Please Specify a list of cuda subpackages to install as env:cuda_packages"
+    exit 1
+}
 
 # Process the list of packages into a list of packages with the version number. Include version specific replacments?
+$SEPARATORS = " ",",",";"
+$package_list = $CUDA_PACKAGES_IN.Split($SEPARATORS, [System.StringSplitOptions]::RemoveEmptyEntries)
+echo $package_list
+
+$CUDA_PACKAGES_STRING=""
+Foreach ($package in $CUDA_PACKAGES_IN) {
+
+    # Make sure the correct package name is used for nvcc.
+    if($package -eq "nvcc" -and [version]$CUDA_VERSION_FULL -lt [version]"9.1"){
+        $package="compiler"
+    } elseif($package -eq "compiler" -and [version]$CUDA_VERSION_FULL -ge [version]"9.1") {
+        $package="nvcc"
+    }
+    $CUDA_PACKAGES_STRING += " $($pacakage)_$($CUDA_MAJOR).$($CUDA_MINOR)"
+
+}
+
+echo "CUDA_PACKAGES_STRING"
+echo $CUDA_PACKAGES_STRING
 
 
 
