@@ -19,6 +19,7 @@ jobs:
         exclude:
           - os: windows-2019
             cuda: 9.0.176
+          - os: windows-2019
             cuda: 10.0.130
         include:
           # Explicitly add in extra data for visual studio versions
