@@ -25,7 +25,11 @@ jobs:
 
     # Add msbuild etc to path
     - name: setup-msbuild
-      uses: microsoft/setup-msbuild@v1
+      run: |
+        echo "::add-path::C:\"
+      shell: powershell
+      # The action does not work on vs2017, so it's useless.
+      # uses: microsoft/setup-msbuild@v1
 
     - name: Install CUDA
       run: |
@@ -57,7 +61,11 @@ jobs:
         cmake .. -G "${{ env.visual_studio }}" -A x64
       shell: bash
 
-
     - name: Build
-      run: msbuild main.sln -property:Configuration=Release
+      run: cmake --build . --config Release -t ALL_BUILD --verbose
+      working-directory: build
+
+    - name: Run
+      run: ./Release/main.exe
+      shell: bash
       working-directory: build
