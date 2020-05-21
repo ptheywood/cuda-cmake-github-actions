@@ -51,6 +51,9 @@ jobs:
         mkdir -p build
         cd build
         cmake .. -G "${{ env.visual_studio }}" -A x64
+        cat 
+      shell: bash
+
 
     - name: Build
       run: |
