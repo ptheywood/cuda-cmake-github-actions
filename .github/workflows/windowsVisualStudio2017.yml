@@ -23,6 +23,10 @@ jobs:
 
     - uses: actions/checkout@v2
 
+    # Add msbuild etc to path
+    - name: setup-msbuild
+      uses: microsoft/setup-msbuild@v1
+
     - name: Install CUDA
       run: |
         # Install CUDA via a powershell script
@@ -55,6 +59,5 @@ jobs:
 
 
     - name: Build
-      run: |
-        make -j 2
+      run: msbuild main.sln -property:Configuration=Release
       working-directory: build
