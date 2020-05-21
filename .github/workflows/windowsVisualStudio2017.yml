@@ -31,6 +31,7 @@ jobs:
         if (!$?) { exit 1 }
         # Set paths for subsequent steps, using $env:CUDA_PATH
         echo "::set-env name=CUDA_PATH::$env:CUDA_PATH"
+        echo "::set-env name=CUDA_PATH_V10_0::$env:CUDA_PATH"
         echo "::add-path::$env:CUDA_PATH/bin"
       shell: powershell
 
