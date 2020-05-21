@@ -105,7 +105,7 @@ $env:PATH = "$($PATH_CUDA_PATH)$($env:PATH)"
 [Environment]::SetEnvironmentVariable("PATH", $env:PATH, [System.EnvironmentVariableTarget]::Machine)
 # Note that these update the registry, and do not effect the current session until a restart.
 
-nvcc -V
+# nvcc -V
 
 Write-Output "This should be adding to the path? and env? ${$CUDA_PATH}"
 # Add to github actions.
