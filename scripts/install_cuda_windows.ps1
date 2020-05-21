@@ -22,7 +22,7 @@ $VISUAL_STUDIO_MIN_CUDA = @{
     "2015" = "8.0";
 }
 
-CUDA_PACKAGES_IN = @(
+$CUDA_PACKAGES_IN = @(
     "nvcc";
     "visual_studio_integration";
     "curand_dev";
