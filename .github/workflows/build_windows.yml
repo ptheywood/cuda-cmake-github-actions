@@ -15,6 +15,8 @@ jobs:
       matrix:
         os: [windows-2019]
         cuda: [10.2.89]
+    env:
+      cuda: ${{ matrix.cuda }} 
 
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -29,17 +31,19 @@ jobs:
 
     - name: install_cuda
       run: |
+        echo "env.cuda ${{ env.cuda }}"
         .\scripts\install_cuda_windows.ps1
-        
+        # Set paths for subsequent steps, using the environment variable set by the script.
         echo "::set-env name=CUDA_PATH::$env:CUDA_PATH"
         echo "::add-path::$env:CUDA_PATH/bin"
+        echo "Using CUDA_PATH $env:CUDA_PATH"
       shell: powershell
 
     - name: check_paths
       run: | 
         echo $PATH
         echo $CUDA_PATH
-      shell: bash
+      shell: bash        
 
     - name: temp_path_additions
       run: |

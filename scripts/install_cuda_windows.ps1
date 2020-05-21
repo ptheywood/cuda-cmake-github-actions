@@ -3,6 +3,8 @@
 # CUDA Version to download and install. @todo - make this be read in from the matrix.
 $CUDA_VERSION_FULL = "10.2.89"
 
+echo "INNER ENV_CUDA $env:cuda"
+
 # Dictionary of known cuda versions and thier download URLS, which do not follow a consistent pattern :(
 $CUDA_KNOWN_URLS = @{
     "8.0.44" = "http://developer.nvidia.com/compute/cuda/8.0/Prod/network_installers/cuda_8.0.44_win10_network-exe";
@@ -48,7 +50,7 @@ $CUDA_REPO_PKG_LOCAL="cuda_$($CUDA_VERSION_FULL)_win10_network.exe"
 
 # Build list of required cuda packages to be installed. See https://docs.nvidia.com/cuda/cuda-installation-guide-microsoft-windows/index.html#install-cuda-software for pacakge details. 
 
-# @todo - make this configurable outside the script and therefore be fed in? Although ti is CUDA version dependent...
+# @todo - make this configurable outside the script and therefore be fed in? Although it is CUDA version dependent...
 
 # CUDA < 9.1 had a differnt package name for the compiler.
 $NVCC_PACKAGE_NAME="nvcc"
@@ -57,11 +59,9 @@ if ([version]$CUDA_VERSION_FULL -lt [version]"9.1"){
 }
 # Build string containing list of pacakges. Do not need Display.Driver
 $CUDA_PACKAGES  = "$($NVCC_PACKAGE_NAME)_$($CUDA_MAJOR).$($CUDA_MINOR)"
-# $CUDA_PACKAGES += " visual_studio_integration_$($CUDA_MAJOR).$($CUDA_MINOR)"
+$CUDA_PACKAGES += " visual_studio_integration_$($CUDA_MAJOR).$($CUDA_MINOR)"
 # $CUDA_PACKAGES += " curand_dev_$($CUDA_MAJOR).$($CUDA_MINOR)"
-# $CUDA_PACKAGES += " nvrtc_$($CUDA_MAJOR).$($CUDA_MINOR)"
 # $CUDA_PACKAGES += " nvrtc_dev_$($CUDA_MAJOR).$($CUDA_MINOR)"
-# $CUDA_PACKAGES += " cupti_$($CUDA_MAJOR).$($CUDA_MINOR)"
 
 
 
@@ -79,7 +79,7 @@ $CUDA_PACKAGES  = "$($NVCC_PACKAGE_NAME)_$($CUDA_MAJOR).$($CUDA_MINOR)"
 #     exit 1
 # }
 
-# # Invoke silent install of CUDA (via network installer)
+# Invoke silent install of CUDA (via network installer)
 # Write-Output "Installing CUDA $($CUDA_VERSION_FULL) Compiler and Runtime"
 # Start-Process -Wait -FilePath .\"$($CUDA_REPO_PKG_LOCAL)" -ArgumentList "-s $($CUDA_PACKAGES)"
 
@@ -89,28 +89,13 @@ $CUDA_PACKAGES  = "$($NVCC_PACKAGE_NAME)_$($CUDA_MAJOR).$($CUDA_MINOR)"
 #     exit 1 
 # }
 
-# @todo - set environment variables like path.
 
-
-# The silent cuda installer doesn't set the PATH with the currently specified subpackages, so must set CUDA_PATH and PATH manually. This is in part a workaround for CMAKE < 3.17 not correctly setting some values when using visual studio generators.
+# Store the CUDA_PATH in the environment for the current session, to be forwarded in the action.
 $CUDA_PATH = "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v$($CUDA_MAJOR).$($CUDA_MINOR)"
-$PATH_CUDA_PATH = "$($CUDA_PATH)\bin\;$($CUDA_PATH)\libnvvp\;"
 # Set environmental variables in this session
 Write-Output "CUDA_PATH $($CUDA_PATH)"
-Write-Output "Setting CUDA_PATH and PATH."
 $env:CUDA_PATH = "$($CUDA_PATH)"
-$env:PATH = "$($PATH_CUDA_PATH)$($env:PATH)"
-# Make the new values persist the reboot via the registry.
-[Environment]::SetEnvironmentVariable("CUDA_PATH", $env:CUDA_PATH, [System.EnvironmentVariableTarget]::Machine)
-[Environment]::SetEnvironmentVariable("PATH", $env:PATH, [System.EnvironmentVariableTarget]::Machine)
-# Note that these update the registry, and do not effect the current session until a restart.
 
-# nvcc -V
 
-Write-Output "This should be adding to the path? and env? ${$CUDA_PATH}"
-# Add to github actions.
-Write-Output "::add-path::${$CUDA_PATH}\bin"
-Write-Output "::add-path::${$CUDA_PATH}\libnvvp"
-Write-Output "::set-env name=CUDA_PATH::${$CUDA_PATH}"
 
 Write-Output "Installation Complete!"
