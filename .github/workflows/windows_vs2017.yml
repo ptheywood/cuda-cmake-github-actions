@@ -1,4 +1,4 @@
-name: build_windows
+name: windows_vs2017
 
 on:
   push:
@@ -11,18 +11,12 @@ jobs:
     runs-on:  ${{ matrix.os }}
     strategy:
       matrix:
-        # Define the default matrix of OS + CUDA
-        os: [windows-2019, windows-2016]
+        # Just one OS
+        os: windows-2016
+        # Multiple cuda versions
         cuda: [9.0.176, 10.0.130, 10.2.89]
-        # cuda: [9.0.176, 9.2.148, 10.0.130, 10.1.243, 10.2.89]
-        # Exclude bad CUDA visual studio combos.
-        exclude:
-          - os: windows-2019
-            cuda: 9.0.176
-          - os: windows-2019
-            cuda: 10.0.130
+        # Explicitly add the visual studio version based on the os.
         include:
-          # Explicitly add in extra data for visual studio versions
           - os: windows-2019
             visual_studio: 2019
           - os: windows-2016
@@ -32,17 +26,11 @@ jobs:
 
     env:
       cuda: ${{ matrix.cuda }} 
-      cuda_packages: "nvcc;visual_studio_integration;curand_dev;nvrtc_dev;"
       visual_studio: ${{ matrix.visual_studio }}
 
     steps:
 
     - uses: actions/checkout@v2
-
-    - name: Select Visual Studio
-      run: |
-        echo "$env:visual_studio"
-      shell: powershell
 
     - name: Install CUDA
       run: |

@@ -22,6 +22,14 @@ $VISUAL_STUDIO_MIN_CUDA = @{
     "2015" = "8.0";
 }
 
+CUDA_PACKAGES_IN = @(
+    "nvcc";
+    "visual_studio_integration";
+    "curand_dev";
+    "nvrtc_dev";
+)
+
+
 ## -------------------
 ## Select CUDA version
 ## -------------------
@@ -62,15 +70,6 @@ if($VISUAL_STUDIO_YEAR.length -ne 0 -and $VISUAL_STUDIO_MIN_CUDA.containsKey($VI
 ## ------------------------------------------------
 
 $CUDA_PACKAGES = ""
-$CUDA_PACKAGES_IN = $env:cuda_packages
-# If no packages were provided, error.
-if ($CUDA_PACKAGES_IN.length -eq 0){
-    Write-Output "Please Specify a list of cuda subpackages to install as env:cuda_packages. See https://docs.nvidia.com/cuda/cuda-installation-guide-microsoft-windows/index.html#install-cuda-software"
-    exit 1
-}
-# Process the list of packages into a list of packages with the version number. Include version specific replacments?
-$SEPARATORS = " ",",",";"
-$package_list = $CUDA_PACKAGES_IN.Split($SEPARATORS, [System.StringSplitOptions]::RemoveEmptyEntries)
 Foreach ($package in $package_list) {
     # Make sure the correct package name is used for nvcc.
     if($package -eq "nvcc" -and [version]$CUDA_VERSION_FULL -lt [version]"9.1"){
