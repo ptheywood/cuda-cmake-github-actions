@@ -24,7 +24,7 @@ jobs:
     - name: Install CUDA
       run: |
         bash --version
-        ./scripts/install_cuda_ubuntu.sh
+        source ./scripts/install_cuda_ubuntu.sh
         if [[ $? -eq 0 ]]; then
           echo "Settings Paths"
           echo "CUDA_PATH=${CUDA_PATH}"
