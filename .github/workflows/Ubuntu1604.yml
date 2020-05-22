@@ -1,5 +1,5 @@
+# Ubuntu 16.04 supports CUDA 8.0+
 name: Ubuntu1604
-# Ubuntu 16.04 with CUDA 9.0, 9.2, 10.0 and 10.2
 
 on:
   push:
@@ -9,47 +9,32 @@ on:
 
 jobs:
   build:
-    runs-on:  ${{ matrix.os }}
+    runs-on:  ubuntu-16.04
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-16.04]
-        cuda: [9.0.176, 9.2.148, 10.0.130, 10.2.89]
+        cuda: [8.0, 9.0, 10.0]
     env:
       cuda: ${{ matrix.cuda }}
 
     steps:
     - uses: actions/checkout@v2
-
-    # Split version strings and set as environment variables for later use.
-    - name: split_version
+    
+    - name: Install CUDA
       run: |
-        echo "::set-env name=CUDA_MAJOR::$(echo "${{ env.cuda }}" | cut -d. -f1)"
-        echo "::set-env name=CUDA_MINOR::$(echo "${{ env.cuda }}" | cut -d. -f2)"
-        echo "::set-env name=CUDA_PATCH::$(echo "${{ env.cuda }}" | cut -d. -f3)"
-        echo "::set-env name=UBUNTU_VERSION::$(echo "${{ matrix.os }}" | tr -d '.\-')"
-
-    # @todo - would this be better in a script?
-    - name: Install cuda
-      run: |
-        sudo apt-get install apt-transport-https ca-certificates gnupg software-properties-common wget python3-pip doxygen
-        CUDA_REPO_PKG=cuda-repo-${UBUNTU_VERSION}_${CUDA_MAJOR}.${CUDA_MINOR}.${CUDA_PATCH}-1_amd64.deb
-        sudo wget https://developer.download.nvidia.com/compute/cuda/repos/${UBUNTU_VERSION}/x86_64/7fa2af80.pub
-        sudo apt-key add 7fa2af80.pub
-        wget https://developer.download.nvidia.com/compute/cuda/repos/${UBUNTU_VERSION}/x86_64/${CUDA_REPO_PKG}
-        sudo dpkg -i ${CUDA_REPO_PKG}
-        rm ${CUDA_REPO_PKG}
-        sudo apt-get update -qq
-        sudo apt-get install -y --no-install-recommends cuda-compiler-${CUDA_MAJOR}-${CUDA_MINOR} cuda-cudart-dev-${CUDA_MAJOR}-${CUDA_MINOR} cuda-curand-dev-${CUDA_MAJOR}-${CUDA_MINOR} cuda-nvrtc-dev-${CUDA_MAJOR}-${CUDA_MINOR}
-        CUDA_ROOT=/usr/local/cuda-${CUDA_MAJOR}.${CUDA_MINOR}
-        echo "::set-env name=CUDA_ROOT::${CUDA_ROOT}"
-        echo "::set-env name=PATH::${CUDA_ROOT}/bin:${PATH}"
-        echo "::set-env name=LD_LIBRARY_PATH::${CUDA_ROOT}/lib:${LD_LIBRARY_PATH}"
+        sh ./scripts/install_cuda_ubuntu.sh
+        if [[ $? -eq 0 ]]; then
+          # Set paths for subsequent steps, using ${CUDA_PATH}
+          echo "::set-env name=CUDA_PATH::${CUDA_PATH}"
+          echo "::add-path::${CUDA_PATH}/bin"
+          echo "::set-env name=LD_LIBRARY_PATH::${CUDA_PATH}/lib:${LD_LIBRARY_PATH}"
+        fi
+      shell: bash
 
     - name: Install cpplint
       run: |
         pip3 install cpplint
-        echo "::set-env name=PATH::$HOME/.local/bin:${PATH}"
+        # echo "::set-env name=PATH::$HOME/.local/bin:${PATH}"
 
     - name: version_check
       run: |
