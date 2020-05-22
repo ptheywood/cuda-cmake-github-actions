@@ -54,14 +54,15 @@ jobs:
 
     - name: CmakeError Output?
       run: |
-          echo "---- CMakeFiles/CMakeOutput.log"
           if [[ -f "CMakeFiles/CMakeOutput.log" ]]; then
-            cat CMakeFiles/CMakeOutput.log 2>/dev/null
+            echo "---- CMakeFiles/CMakeOutput.log"
+            cat CMakeFiles/CMakeOutput.log
+            echo "----"
           fi
-          echo "----"
-          echo "---- CMakeFiles/CMakeError.log"
           if [[ -f "CMakeFiles/CMakeOutput.log" ]]; then
-            cat CMakeFiles/CMakeError.log 2>/dev/null
+            echo "---- CMakeFiles/CMakeError.log"
+            cat CMakeFiles/CMakeError.log
+            echo "----"
           fi
       shell: bash
       working-directory: build
