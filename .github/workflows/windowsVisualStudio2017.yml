@@ -1,5 +1,5 @@
+# VS2017 (_MSC_VER 1916) only supports CUDA 10.0+
 name: WindowsVisualStudio2017
-# CUDA 9.0+ for VS2017 
 
 on:
   push:
@@ -11,10 +11,9 @@ jobs:
   build:
     runs-on:  windows-2016
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
-        cuda: [9.0.176]
-        # cuda: [9.0.176, 9.2.148, 10.0.130, 10.2.89]
+        cuda: [10.0.130, 10.1., 10.2.89]
     env:
       visual_studio: "Visual Studio 15 2017"
       cuda: ${{ matrix.cuda }} 
@@ -27,16 +26,13 @@ jobs:
         # Install CUDA via a powershell script
         .\scripts\install_cuda_windows.ps1
         # Abort if the script returned an error code
-        if (!$?) { exit 1 }
-        # Set paths for subsequent steps, using $env:CUDA_PATH
-        echo "::set-env name=CUDA_PATH::$env:CUDA_PATH"
-        echo "::set-env name=$env:CUDA_PATH_VX_Y::$env:CUDA_PATH"
-        echo "::add-path::$env:CUDA_PATH/bin"
+        if ($?) {
+          # Set paths for subsequent steps, using $env:CUDA_PATH
+          echo "::set-env name=CUDA_PATH::$env:CUDA_PATH"
+          echo "::set-env name=$env:CUDA_PATH_VX_Y::$env:CUDA_PATH"
+          echo "::add-path::$env:CUDA_PATH/bin"
+        }
       shell: powershell
-
-    - name: Check NVCC
-      run: | 
-        nvcc -V
 
     - name: Install cpplint
       run: |
@@ -52,7 +48,7 @@ jobs:
         status=$? 
       shell: bash
 
-    - name: CmakeError Output?
+    - name: Configure Error Processing
       run: |
           if [[ -f "CMakeFiles/CMakeOutput.log" ]]; then
             echo "---- CMakeFiles/CMakeOutput.log"
@@ -66,9 +62,7 @@ jobs:
           fi
       shell: bash
       working-directory: build
-      # if: ${{ failure() }}
       if: ${{ failure() && steps.configure.outcome == 'failure' }}
-
 
     - name: Build
       run: cmake --build . --config Release -t ALL_BUILD --verbose
