@@ -40,7 +40,7 @@ jobs:
     - name: Install cpplint
       run: |
         pip3 install cpplint
-        # echo "::set-env name=PATH::$HOME/.local/bin:${PATH}"
+        echo "::set-env name=PATH::$HOME/.local/bin:${PATH}"
 
     - name: version_check
       run: |
