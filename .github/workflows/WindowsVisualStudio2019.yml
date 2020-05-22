@@ -5,12 +5,18 @@ on:
   push:
     branches: [ master ]
     paths:
-      # Don't trigger on workflow changes
+      # All files by default
+      "**"
+      # Don't trigger for files which don't cause build changes
+      "!.gitignore"
+      "!**.md"
+      # Don't trigger for workflow changes
       "!.github/workflows/**"
       # Except for this workflow
-      ".github/workflows/windowsVisualStudio2019"
+      ".github/workflows/${{ name }}"
+  # Trigger on all PRs?
   pull_request:
-    branches: [ master ]
+
 
 jobs:
   build:
