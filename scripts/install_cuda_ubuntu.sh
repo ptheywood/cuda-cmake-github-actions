@@ -9,7 +9,7 @@
 
 # List of packages to install.
 CUDA_PACKAGES_IN=(
-    "compiler"
+    "command-line-tools"
     "curand-dev"
     "nvrtc-dev"
 )
@@ -88,6 +88,7 @@ fi
 CUDA_PACKAGES=""
 for package in "${CUDA_PACKAGES_IN[@]}"
 do : 
+    # @todo This is not perfect. Should probably provide a separate list for diff versions
     # cuda-compiler-X-Y if CUDA >= 9.1 else cuda-nvcc-X-Y
     if [[ "${package}" == "nvcc" ]] && version_ge "$CUDA_VERSION_MAJOR_MINOR" "9.1" ; then
         package="compiler"
@@ -115,11 +116,14 @@ echo "APT_KEY_URL ${APT_KEY_URL}"
 ## -----------------
 ## Install
 ## -----------------
+echo "Adding CUDA Repository"
 wget ${PIN_URL}
 sudo mv ${PIN_FILENAME} /etc/apt/preferences.d/cuda-repository-pin-600
 sudo apt-key adv --fetch-keys ${APT_KEY_URL}
 sudo add-apt-repository "deb ${REPO_URL} /"
 sudo apt-get update
+
+echo "Installing CUDA packages ${CUDA_PACKAGES}"
 sudo apt-get -y install ${CUDA_PACKAGES}
 
 if [[ $? -ne 0 ]]; then
@@ -138,4 +142,4 @@ export CUDA_PATH=${CUDA_PATH}
 # Quick test. @temp
 export PATH="$CUDA_PATH/bin:$PATH"
 export LD_LIBRARY_PATH="$CUDA_PATH/lib:$LD_LIBRARY_PATH"
-nvcc -v
+nvcc -V

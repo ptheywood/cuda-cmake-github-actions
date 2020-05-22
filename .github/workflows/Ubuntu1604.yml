@@ -13,7 +13,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        cuda: ["8.0", "9.0", "10.0"]
+        cuda: ["8.0"]
+        # cuda: ["8.0", "9.0", "10.0"]
     env:
       cuda: ${{ matrix.cuda }}
 
