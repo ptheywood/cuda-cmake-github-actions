@@ -22,25 +22,25 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    # - name: Install CUDA
-    #   run: |
-    #     # Install CUDA via a powershell script
-    #     .\scripts\install_cuda_windows.ps1
-    #     # Abort if the script returned an error code
-    #     if (!$?) { exit 1 }
-    #     # Set paths for subsequent steps, using $env:CUDA_PATH
-    #     echo "::set-env name=CUDA_PATH::$env:CUDA_PATH"
-    #     echo "::set-env name=$env:CUDA_PATH_VX_Y::$env:CUDA_PATH"
-    #     echo "::add-path::$env:CUDA_PATH/bin"
-    #   shell: powershell
+    - name: Install CUDA
+      run: |
+        # Install CUDA via a powershell script
+        .\scripts\install_cuda_windows.ps1
+        # Abort if the script returned an error code
+        if (!$?) { exit 1 }
+        # Set paths for subsequent steps, using $env:CUDA_PATH
+        echo "::set-env name=CUDA_PATH::$env:CUDA_PATH"
+        echo "::set-env name=$env:CUDA_PATH_VX_Y::$env:CUDA_PATH"
+        echo "::add-path::$env:CUDA_PATH/bin"
+      shell: powershell
 
-    # - name: Check NVCC
-    #   run: | 
-    #     nvcc -V
+    - name: Check NVCC
+      run: | 
+        nvcc -V
 
-    # - name: Install cpplint
-    #   run: |
-    #     python -m pip install --upgrade cpplint
+    - name: Install cpplint
+      run: |
+        python -m pip install --upgrade cpplint
 
     - name: Configure CMake
       id: configure
@@ -59,7 +59,7 @@ jobs:
             cat CMakeFiles/CMakeOutput.log
             echo "----"
           fi
-          if [[ -f "CMakeFiles/CMakeOutput.log" ]]; then
+          if [[ -f "CMakeFiles/CMakeError.log" ]]; then
             echo "---- CMakeFiles/CMakeError.log"
             cat CMakeFiles/CMakeError.log
             echo "----"
