@@ -3,9 +3,9 @@ name: WindowsVisualStudio2017
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches: [ master, windows ]
+  # pull_request:
+  #   branches: [ master ]
 
 jobs:
   build:

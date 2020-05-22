@@ -3,19 +3,19 @@ name: WindowsVisualStudio2019
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, windows ]
     paths:
       # All files by default
-      "**"
+      - "**"
       # Don't trigger for files which don't cause build changes
-      "!.gitignore"
-      "!**.md"
+      - "!.gitignore"
+      - "!**.md"
       # Don't trigger for workflow changes
-      "!.github/workflows/**"
+      - "!.github/workflows/**"
       # Except for this workflow
-      ".github/workflows/${{ name }}"
+      - ".github/workflows/${{ name }}"
   # Trigger on all PRs?
-  pull_request:
+  # pull_request:
 
 
 jobs:
