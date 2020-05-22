@@ -1,5 +1,5 @@
-# Ubuntu 16.04 supports CUDA 8.0+
-name: Ubuntu1604
+# Ubuntu 18.04 supports CUDA 10.0+
+name: Ubuntu1804
 
 on:
   push:
@@ -9,11 +9,11 @@ on:
 
 jobs:
   build:
-    runs-on:  ubuntu-16.04
+    runs-on:  ubuntu-18.04
     strategy:
       fail-fast: false
       matrix:
-        cuda: ["8.0", "9.0", "10.0"]
+        cuda: ["10.0", "10.1", "10.2"]
     env:
       cuda: ${{ matrix.cuda }}
 
