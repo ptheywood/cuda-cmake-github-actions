@@ -33,6 +33,10 @@ jobs:
         echo "::add-path::$env:CUDA_PATH/bin"
       shell: powershell
 
+    - name: Check NVCC
+      run: | 
+        nvcc -V
+
     - name: Install cpplint
       run: |
         python -m pip install --upgrade cpplint
