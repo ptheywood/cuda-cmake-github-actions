@@ -1,0 +1,75 @@
+# VS2017 (_MSC_VER 1916) only supports CUDA 10.0+
+name: WindowsVisualStudio2017
+
+on:
+  push:
+    branches: [ master, windows ]
+  # pull_request:
+  #   branches: [ master ]
+
+jobs:
+  build:
+    runs-on:  windows-2016
+    strategy:
+      fail-fast: false
+      matrix:
+        cuda: [10.0.130, 10.1.243, 10.2.89]
+    env:
+      visual_studio: "Visual Studio 15 2017"
+      cuda: ${{ matrix.cuda }} 
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install CUDA
+      run: |
+        # Install CUDA via a powershell script
+        .\scripts\install_cuda_windows.ps1
+        # Abort if the script returned an error code
+        if ($?) {
+          # Set paths for subsequent steps, using $env:CUDA_PATH
+          echo "::set-env name=CUDA_PATH::$env:CUDA_PATH"
+          echo "::set-env name=$env:CUDA_PATH_VX_Y::$env:CUDA_PATH"
+          echo "::add-path::$env:CUDA_PATH/bin"
+        }
+      shell: powershell
+
+    - name: Install cpplint
+      run: |
+        python -m pip install --upgrade cpplint
+
+    - name: Configure CMake
+      id: configure
+      run: |
+        mkdir -p build
+        cd build
+        cmake .. -G "${{ env.visual_studio }}" -A x64
+        #  -DCUDA_TOOLKIT_ROOT_DIR="$CUDA_PATH"
+        status=$? 
+      shell: bash
+
+    - name: Configure Error Processing
+      run: |
+          if [[ -f "CMakeFiles/CMakeOutput.log" ]]; then
+            echo "---- CMakeFiles/CMakeOutput.log"
+            cat CMakeFiles/CMakeOutput.log
+            echo "----"
+          fi
+          if [[ -f "CMakeFiles/CMakeError.log" ]]; then
+            echo "---- CMakeFiles/CMakeError.log"
+            cat CMakeFiles/CMakeError.log
+            echo "----"
+          fi
+      shell: bash
+      working-directory: build
+      if: ${{ failure() && steps.configure.outcome == 'failure' }}
+
+    - name: Build
+      run: cmake --build . --config Release -t ALL_BUILD --verbose
+      working-directory: build
+
+    # No GPU so no point in running
+    # - name: Run
+    #   run: ./Release/main.exe
+    #   shell: bash
+    #   working-directory: build
