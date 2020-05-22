@@ -7,6 +7,11 @@ This will **potentially** be expanded to investigate self-hosted runner(s) for r
 ![build_ubuntu](https://github.com/ptheywood/cuda-cmake-github-actions/workflows/build_ubuntu/badge.svg)
 
 
+![Ubuntu1604](https://github.com/ptheywood/cuda-cmake-github-actions/workflows/Ubuntu1604/badge.svg)
+![Ubuntu1804](https://github.com/ptheywood/cuda-cmake-github-actions/workflows/Ubuntu1804/badge.svg)
+![WindowsVisualStudio2017](https://github.com/ptheywood/cuda-cmake-github-actions/workflows/WindowsVisualStudio2017/badge.svg)
+![WindowsVisualStudio2019](https://github.com/ptheywood/cuda-cmake-github-actions/workflows/WindowsVisualStudio2019/badge.svg)
+
 ## Sample application.
 
 To be representative of a real world example this should include:
