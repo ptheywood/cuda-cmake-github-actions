@@ -26,11 +26,15 @@ jobs:
         bash --version
         ./scripts/install_cuda_ubuntu.sh
         if [[ $? -eq 0 ]]; then
+          echo "Settings Paths"
+          echo "CUDA_PATH=${CUDA_PATH}"
           # Set paths for subsequent steps, using ${CUDA_PATH}
           echo "::set-env name=CUDA_PATH::${CUDA_PATH}"
           echo "::add-path::${CUDA_PATH}/bin"
           echo "::set-env name=LD_LIBRARY_PATH::${CUDA_PATH}/lib:${LD_LIBRARY_PATH}"
         fi
+        echo $PATH
+        nvcc -V
       shell: bash
 
     - name: Install cpplint
