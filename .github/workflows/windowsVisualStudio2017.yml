@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on:  windows-2016
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         cuda: [9.0.176, 9.2.148, 10.0.130, 10.2.89]
     env:
@@ -45,7 +45,13 @@ jobs:
       run: |
         mkdir -p build
         cd build
-        cmake .. -G "${{ env.visual_studio }}" -A x64
+        cmake .. -G "${{ env.visual_studio }}" -A x64 --DCUDA_TOOLKIT_ROOT_DIR=${{ env.CUDA_PATH }}
+        status=$?
+        if [ $status -ne 0 ]; then
+          cat CMakeOutput.log 2>/dev/null
+          cat CMakeError.log 2>/dev/null
+          exit 1
+        fi
       shell: bash
 
     - name: Build
