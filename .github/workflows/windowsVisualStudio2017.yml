@@ -43,6 +43,7 @@ jobs:
     #     python -m pip install --upgrade cpplint
 
     - name: Configure CMake
+      id: configure
       run: |
         mkdir -p build
         cd build
@@ -51,20 +52,21 @@ jobs:
         status=$? 
       shell: bash
 
-    - name:
+    - name: CmakeError Output?
       run: |
           echo "---- CMakeFiles/CMakeOutput.log"
-          if [[ -f "$FILE" ]]; then
+          if [[ -f "CMakeFiles/CMakeOutput.log" ]]; then
             cat CMakeFiles/CMakeOutput.log 2>/dev/null
           fi
           echo "----"
           echo "---- CMakeFiles/CMakeError.log"
-          if [[ -f "$FILE" ]]; then
+          if [[ -f "CMakeFiles/CMakeOutput.log" ]]; then
             cat CMakeFiles/CMakeError.log 2>/dev/null
           fi
       shell: bash
       working-directory: build
-      if: ${{ failure() }}
+      # if: ${{ failure() }}
+      if: ${{ steps.configure.failure }}
 
 
     - name: Build
