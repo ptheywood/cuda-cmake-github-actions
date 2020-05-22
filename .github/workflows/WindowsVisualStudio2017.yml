@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        cuda: [10.0.130, 10.1., 10.2.89]
+        cuda: [10.0.130, 10.1.243, 10.2.89]
     env:
       visual_studio: "Visual Studio 15 2017"
       cuda: ${{ matrix.cuda }} 
