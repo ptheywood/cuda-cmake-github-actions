@@ -13,7 +13,8 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        cuda: [9.0.176, 9.2.148, 10.0.130, 10.2.89]
+        cuda: [9.0.176]
+        # cuda: [9.0.176, 9.2.148, 10.0.130, 10.2.89]
     env:
       visual_studio: "Visual Studio 15 2017"
       cuda: ${{ matrix.cuda }} 
@@ -48,8 +49,12 @@ jobs:
         cmake .. -G "${{ env.visual_studio }}" -A x64 -DCUDA_TOOLKIT_ROOT_DIR="$CUDA_PATH"
         status=$?
         if [ $status -ne 0 ]; then
-          cat CMakeOutput.log 2>/dev/null
-          cat CMakeError.log 2>/dev/null
+          echo "---- CMakeFiles/CMakeOutput.log"
+          cat CMakeFiles/CMakeOutput.log 2>/dev/null
+          echo "----"
+          echo "---- CMakeFiles/CMakeError.log"
+          cat CMakeFiles/CMakeError.log 2>/dev/null
+          echo "----"
           exit 1
         fi
       shell: bash
