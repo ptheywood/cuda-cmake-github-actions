@@ -115,7 +115,6 @@ echo "APT_KEY_URL ${APT_KEY_URL}"
 ## -----------------
 ## Install
 ## -----------------
-
 wget ${PIN_URL}
 sudo mv ${PIN_FILENAME} /etc/apt/preferences.d/cuda-repository-pin-600
 sudo apt-key adv --fetch-keys ${APT_KEY_URL}
@@ -123,6 +122,10 @@ sudo add-apt-repository "deb ${REPO_URL} /"
 sudo apt-get update
 sudo apt-get -y install ${CUDA_PACKAGES}
 
+if [[ $? -ne 0 ]]; then
+    echo "CUDA Installation Error."
+    exit 1
+fi
 ## -----------------
 ## Set environment vars / vars to be propagated
 ## -----------------
