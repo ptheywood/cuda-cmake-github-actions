@@ -49,22 +49,23 @@ jobs:
         cmake .. -G "${{ env.visual_studio }}" -A x64
         #  -DCUDA_TOOLKIT_ROOT_DIR="$CUDA_PATH"
         status=$? 
-        echo "status?"
-        echo $status
-        if [ $status -ne 0 ]; then
-            echo "in if"
-            echo "---- CMakeFiles/CMakeOutput.log"
-            cat CMakeFiles/CMakeOutput.log 2>/dev/null
-            echo "----"
-            echo "---- CMakeFiles/CMakeError.log"
-            cat CMakeFiles/CMakeError.log 2>/dev/null
-            echo "----"
-            exit 1
-        else
-            echo "else"
-
-        fi
       shell: bash
+
+    - name:
+      run: |
+          echo "---- CMakeFiles/CMakeOutput.log"
+          if [[ -f "$FILE" ]]; then
+            cat CMakeFiles/CMakeOutput.log 2>/dev/null
+          fi
+          echo "----"
+          echo "---- CMakeFiles/CMakeError.log"
+          if [[ -f "$FILE" ]]; then
+            cat CMakeFiles/CMakeError.log 2>/dev/null
+          fi
+      shell: bash
+      working-directory: build
+      if: ${{ failure() }}
+
 
     - name: Build
       run: cmake --build . --config Release -t ALL_BUILD --verbose
