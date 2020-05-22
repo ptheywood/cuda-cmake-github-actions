@@ -19,10 +19,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    
+
     - name: Install CUDA
       run: |
-        sh ./scripts/install_cuda_ubuntu.sh
+        bash --version
+        ./scripts/install_cuda_ubuntu.sh
         if [[ $? -eq 0 ]]; then
           # Set paths for subsequent steps, using ${CUDA_PATH}
           echo "::set-env name=CUDA_PATH::${CUDA_PATH}"
