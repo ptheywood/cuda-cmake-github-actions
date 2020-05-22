@@ -25,7 +25,7 @@ jobs:
     - name: Install CUDA
       run: |
         # Install CUDA via a powershell script
-        .\scripts\install_cuda_windows.ps1
+        # .\scripts\install_cuda_windows.ps1
         # Abort if the script returned an error code
         if (!$?) { exit 1 }
         # Set paths for subsequent steps, using $env:CUDA_PATH
@@ -37,6 +37,7 @@ jobs:
     - name: Check NVCC
       run: | 
         nvcc -V
+        exit 0
 
     - name: Install cpplint
       run: |
@@ -46,16 +47,23 @@ jobs:
       run: |
         mkdir -p build
         cd build
-        cmake .. -G "${{ env.visual_studio }}" -A x64 -DCUDA_TOOLKIT_ROOT_DIR="$CUDA_PATH"
-        status=$?
+        cmake .. -G "${{ env.visual_studio }}" -A x64
+        #  -DCUDA_TOOLKIT_ROOT_DIR="$CUDA_PATH"
+        status=$? 
+        echo "status?"
+        echo $status
         if [ $status -ne 0 ]; then
-          echo "---- CMakeFiles/CMakeOutput.log"
-          cat CMakeFiles/CMakeOutput.log 2>/dev/null
-          echo "----"
-          echo "---- CMakeFiles/CMakeError.log"
-          cat CMakeFiles/CMakeError.log 2>/dev/null
-          echo "----"
-          exit 1
+            echo "in if"
+            echo "---- CMakeFiles/CMakeOutput.log"
+            cat CMakeFiles/CMakeOutput.log 2>/dev/null
+            echo "----"
+            echo "---- CMakeFiles/CMakeError.log"
+            cat CMakeFiles/CMakeError.log 2>/dev/null
+            echo "----"
+            exit 1
+        else
+            echo "else"
+
         fi
       shell: bash
 
