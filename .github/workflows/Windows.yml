@@ -5,7 +5,7 @@ on:
   push:
     paths:
       - "**"
-      - "!.github"
+      - "!.github/**"
       - ".github/workflows/Windows.yml"
   # pull_request:
   #   paths:
