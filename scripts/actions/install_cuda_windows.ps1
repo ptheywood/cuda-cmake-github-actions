@@ -24,13 +24,15 @@ $VISUAL_STUDIO_MIN_CUDA = @{
     "2015" = "8.0"; # might support older, unsure.
 }
 
+# cuda_runtime.h is in nvcc <= 10.2, but cudart >= 11.0
+# @todo - make this easier to vary per CUDA version.
 $CUDA_PACKAGES_IN = @(
     "nvcc";
     "visual_studio_integration";
     "curand_dev";
     "nvrtc_dev";
-    "cudart";
 )
+    # "cudart";
 
 
 ## -------------------
@@ -74,6 +76,14 @@ $VISUAL_STUDIO_YEAR = $VISUAL_STUDIO.Substring($VISUAL_STUDIO.Length-4)
 ## ------------------------------------------------
 
 $CUDA_PACKAGES = ""
+
+# for CUDA >= 11 cudart is a required package.
+if([version]$CUDA_VERSION_FULL -ge [version]"11.0") {
+    if(-not $CUDA_PACKAGES_IN -contains "cudart") {
+        $CUDA_PACKAGES_IN += 'cudart'
+    }
+}
+
 Foreach ($package in $CUDA_PACKAGES_IN) {
     # Make sure the correct package name is used for nvcc.
     if($package -eq "nvcc" -and [version]$CUDA_VERSION_FULL -lt [version]"9.1"){
