@@ -21,6 +21,7 @@ jobs:
       fail-fast: false
       # explicit include-based build matrix, of known valid options
       matrix:
+        experimental: [ false ]
         include:
           # 18.04 supports CUDA 10.1+ (gxx <= 8)
           - os: ubuntu-18.04
