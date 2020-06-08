@@ -77,6 +77,10 @@ jobs:
           echo "::add-path::$env:CUDA_PATH/bin"
         }
 
+    - name: nvcc check
+      shell: bash
+      run: nvcc -V
+
     - name: Configure CMake
       id: configure
       shell: bash
