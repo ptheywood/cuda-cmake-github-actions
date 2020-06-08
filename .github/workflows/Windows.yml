@@ -16,7 +16,6 @@ on:
 jobs:
   build:
     runs-on: ${{ matrix.os }}
-    continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
       # explicit include-based build matrix, of known valid options
@@ -24,35 +23,28 @@ jobs:
         include:
           # Windows2019 & VS 2019 supports 10.1+
           - os: windows-2019
-            cuda: "11.0.1"
+            cuda: "11.0.167"
             visual_studio: "Visual Studio 16 2019"
-            experimental: true
           - os: windows-2019
             cuda: "10.2.89"
             visual_studio: "Visual Studio 16 2019"
-            experimental: false
-          # - os: windows-2019
-          #   cuda: "10.1.243"
-          #   visual_studio: "Visual Studio 16 2019"
-          #   experimental: false
+          - os: windows-2019
+            cuda: "10.1.243"
+            visual_studio: "Visual Studio 16 2019"
 
           # Windows2016 & VS 2017 supports 10.0+
           # - os: windows-2016
           #   cuda: "11.0.1"
           #   visual_studio: "Visual Studio 15 2017"
-          #   experimental: true
           # - os: windows-2016
           #   cuda: "10.2.89"
           #   visual_studio: "Visual Studio 15 2017"
-          #   experimental: false
           # - os: windows-2016
           #   cuda: "10.1.243"
           #   visual_studio: "Visual Studio 15 2017"
-          #   experimental: false
-          # - os: windows-2016
-          #   cuda: "10.0.130"
-          #   visual_studio: "Visual Studio 15 2017"
-          #   experimental: false
+          - os: windows-2016
+            cuda: "10.0.130"
+            visual_studio: "Visual Studio 15 2017"
 
     env:
       build_dir: "build"
