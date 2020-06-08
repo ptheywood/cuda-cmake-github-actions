@@ -31,8 +31,8 @@ $CUDA_PACKAGES_IN = @(
     "visual_studio_integration";
     "curand_dev";
     "nvrtc_dev";
+    "cudart";
 )
-    # "cudart";
 
 
 ## -------------------
@@ -78,11 +78,11 @@ $VISUAL_STUDIO_YEAR = $VISUAL_STUDIO.Substring($VISUAL_STUDIO.Length-4)
 $CUDA_PACKAGES = ""
 
 # for CUDA >= 11 cudart is a required package.
-if([version]$CUDA_VERSION_FULL -ge [version]"11.0") {
-    if(-not $CUDA_PACKAGES_IN -contains "cudart") {
-        $CUDA_PACKAGES_IN += 'cudart'
-    }
-}
+# if([version]$CUDA_VERSION_FULL -ge [version]"11.0") {
+#     if(-not $CUDA_PACKAGES_IN -contains "cudart") {
+#         $CUDA_PACKAGES_IN += 'cudart'
+#     }
+# }
 
 Foreach ($package in $CUDA_PACKAGES_IN) {
     # Make sure the correct package name is used for nvcc.
