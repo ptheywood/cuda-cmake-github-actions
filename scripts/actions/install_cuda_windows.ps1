@@ -14,6 +14,7 @@ $CUDA_KNOWN_URLS = @{
     "10.1.168" = "http://developer.nvidia.com/compute/cuda/10.1/Prod/network_installers/cuda_10.1.168_win10_network.exe";
     "10.1.243" = "http://developer.download.nvidia.com/compute/cuda/10.1/Prod/network_installers/cuda_10.1.243_win10_network.exe";
     "10.2.89" = "http://developer.download.nvidia.com/compute/cuda/10.2/Prod/network_installers/cuda_10.2.89_win10_network.exe";
+    "11.0.167" = "http://developer.download.nvidia.com/compute/cuda/11.0.1/network_installers/cuda_11.0.1_win10_network.exe"
 }
 
 # @todo - change this to be based on _MSC_VER intead, or invert it to be CUDA keyed instead?
@@ -23,11 +24,14 @@ $VISUAL_STUDIO_MIN_CUDA = @{
     "2015" = "8.0"; # might support older, unsure.
 }
 
+# cuda_runtime.h is in nvcc <= 10.2, but cudart >= 11.0
+# @todo - make this easier to vary per CUDA version.
 $CUDA_PACKAGES_IN = @(
     "nvcc";
     "visual_studio_integration";
     "curand_dev";
     "nvrtc_dev";
+    "cudart";
 )
 
 
@@ -72,6 +76,14 @@ $VISUAL_STUDIO_YEAR = $VISUAL_STUDIO.Substring($VISUAL_STUDIO.Length-4)
 ## ------------------------------------------------
 
 $CUDA_PACKAGES = ""
+
+# for CUDA >= 11 cudart is a required package.
+# if([version]$CUDA_VERSION_FULL -ge [version]"11.0") {
+#     if(-not $CUDA_PACKAGES_IN -contains "cudart") {
+#         $CUDA_PACKAGES_IN += 'cudart'
+#     }
+# }
+
 Foreach ($package in $CUDA_PACKAGES_IN) {
     # Make sure the correct package name is used for nvcc.
     if($package -eq "nvcc" -and [version]$CUDA_VERSION_FULL -lt [version]"9.1"){
