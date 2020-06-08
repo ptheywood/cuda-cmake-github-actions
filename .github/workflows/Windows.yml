@@ -81,6 +81,10 @@ jobs:
       shell: bash
       run: nvcc -V
 
+    - name: cmake version
+      shell: bash
+      run: cmake --version
+
     - name: Configure CMake
       id: configure
       shell: bash
