@@ -7,11 +7,11 @@ on:
       - "**"
       - "!.github"
       - ".github/workflows/Ubuntu.yml"
-  pull_request:
-    paths:
-      - "**"
-      - "!.github"
-      - ".github/workflows/Ubuntu.yml"
+  # pull_request:
+  #   paths:
+  #     - "**"
+  #     - "!.github"
+  #     - ".github/workflows/Ubuntu.yml"
 
 jobs:
   build:
