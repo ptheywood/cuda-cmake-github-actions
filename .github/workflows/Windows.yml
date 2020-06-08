@@ -91,7 +91,7 @@ jobs:
       run: cmake . -B ${{ env.build_dir }} -G "${{ matrix.visual_studio }}" -A x64 
 
     - name: Configure Error Processing
-      if: ${{ failure() && steps.configure.outcome == 'failure' }}
+      # if: ${{ failure() && steps.configure.outcome == 'failure' }}
       working-directory: ${{ env.build_dir }}
       shell: bash
       run: |
