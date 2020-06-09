@@ -5,10 +5,8 @@ This repo is a very simple CUDA application, used to GitHub Actions as a CI serv
 This will **potentially** be expanded to investigate self-hosted runner(s) for running tests locally.
 
 
-![Ubuntu1604](https://github.com/ptheywood/cuda-cmake-github-actions/workflows/Ubuntu1604/badge.svg)
-![Ubuntu1804](https://github.com/ptheywood/cuda-cmake-github-actions/workflows/Ubuntu1804/badge.svg)
-![WindowsVisualStudio2017](https://github.com/ptheywood/cuda-cmake-github-actions/workflows/WindowsVisualStudio2017/badge.svg)
-![WindowsVisualStudio2019](https://github.com/ptheywood/cuda-cmake-github-actions/workflows/WindowsVisualStudio2019/badge.svg)
+![Ubuntu](https://github.com/ptheywood/cuda-cmake-github-actions/workflows/Ubuntu/badge.svg)
+![Windows](https://github.com/ptheywood/cuda-cmake-github-actions/workflows/Windows/badge.svg)
 
 ## Sample application.
 
