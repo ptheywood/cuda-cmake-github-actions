@@ -34,7 +34,7 @@ jobs:
 
           # Windows2016 & VS 2017 supports 10.0+
           # - os: windows-2016
-          #   cuda: "11.0.1"
+          #   cuda: "11.0.167"
           #   visual_studio: "Visual Studio 15 2017"
           # - os: windows-2016
           #   cuda: "10.2.89"
