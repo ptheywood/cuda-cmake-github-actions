@@ -25,12 +25,12 @@ jobs:
           - os: windows-2019
             cuda: "11.0.167"
             visual_studio: "Visual Studio 16 2019"
-          - os: windows-2019
-            cuda: "10.2.89"
-            visual_studio: "Visual Studio 16 2019"
-          - os: windows-2019
-            cuda: "10.1.243"
-            visual_studio: "Visual Studio 16 2019"
+          # - os: windows-2019
+          #   cuda: "10.2.89"
+          #   visual_studio: "Visual Studio 16 2019"
+          # - os: windows-2019
+          #   cuda: "10.1.243"
+          #   visual_studio: "Visual Studio 16 2019"
 
           # Windows2016 & VS 2017 supports 10.0+
           # - os: windows-2016
@@ -52,6 +52,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
+    - name: Install Specific Cmake version via Pip.
+      shell: bash
+      run: |
+        python3 -m pip install --user cmake==3.18.0
+        echo "$(python3 -m site --user-base)/bin" >> $GITHUB_PATH
+
+    - name: cmake version?
+      shell: bash
+      run: |
+        which cmake
+        cmake --version
+        echo "${PATH}"
 
     - name: Install CUDA
       env: 
