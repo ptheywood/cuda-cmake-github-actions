@@ -66,6 +66,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+  # Install pinned version of cmake, incase new releases break things like google test...
+    - name: Install Specific Cmake version via Pip.
+      run: |
+        cmake --version
+
     - name: Install CUDA
       env:
         cuda: ${{ matrix.cuda }}
