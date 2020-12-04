@@ -70,6 +70,7 @@ jobs:
     - name: Install Specific Cmake version via Pip.
       run: |
         cmake --version
+        python3 -m pip install cmake==3.18.4
         python3 -m pip install --user cmake==3.18.4
         python3 -m site --user-base
         echo "$(python3 -m site --user-base)" >> $GITHUB_PATH
@@ -77,6 +78,7 @@ jobs:
 
     - name: cmake version?
       run: |
+        which cmake
         cmake --version
         echo "${PATH}"
 
