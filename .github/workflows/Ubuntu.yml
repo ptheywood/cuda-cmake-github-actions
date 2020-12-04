@@ -71,7 +71,7 @@ jobs:
       run: |
         cmake --version
         python3 -m pip install --user cmake==3.18.4
-        echo "$(python3 -m site --user-base)""
+        python3 -m site --user-base
         echo "$(python3 -m site --user-base) >> $GITHUB_PATH"
         cmake --version
 
