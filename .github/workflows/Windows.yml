@@ -56,8 +56,8 @@ jobs:
     - name: Install Specific Cmake version via Pip.
       shell: bash
       run: |
-        python3 -m pip install --user cmake==3.18.0
-        echo "$(python3 -m site --user-base)/bin" >> $GITHUB_PATH
+        python -m pip install --user cmake==3.18.0
+        echo "$(python -m site --user-base)/bin" >> $GITHUB_PATH
 
     - name: cmake version?
       shell: bash
