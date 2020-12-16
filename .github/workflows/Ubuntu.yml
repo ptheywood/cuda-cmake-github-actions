@@ -21,6 +21,10 @@ jobs:
       # explicit include-based build matrix, of known valid options
       matrix:
         include:
+          # 20.04 supports CUDA 11.0+
+          - os: ubuntu-20.04
+            cuda: "11.2"
+            gcc: 10
           # 18.04 supports CUDA 10.1+ (gxx <= 8)
           - os: ubuntu-18.04
             cuda: "11.0"
