@@ -146,3 +146,12 @@ export CUDA_PATH=${CUDA_PATH}
 export PATH="$CUDA_PATH/bin:$PATH"
 export LD_LIBRARY_PATH="$CUDA_PATH/lib:$LD_LIBRARY_PATH"
 nvcc -V
+
+# If executed on github actions, make the appropriate echo statements to update the environment
+if [[ $GITHUB_ACTIONS ]]; then
+    # Set paths for subsequent steps, using ${CUDA_PATH}
+    echo "Adding CUDA to CUDA_PATH, PATH and LD_LIBRARY_PATH"
+    echo "CUDA_PATH=${CUDA_PATH}" >> $GITHUB_ENV
+    echo "${CUDA_PATH}/bin" >> $GITHUB_PATH
+    echo "LD_LIBRARY_PATH=${CUDA_PATH}/lib:${LD_LIBRARY_PATH}" >> $GITHUB_ENV
+fi
