@@ -7,11 +7,6 @@ on:
       - "**"
       - "!.github/**"
       - ".github/workflows/Ubuntu.yml"
-  # pull_request:
-  #   paths:
-  #     - "**"
-  #     - "!.github"
-  #     - ".github/workflows/Ubuntu.yml"
 
 jobs:
   build:
@@ -23,49 +18,17 @@ jobs:
         include:
           # 20.04 supports CUDA 11.0+
           - os: ubuntu-20.04
-            cuda: "11.3"
-            gcc: 10
-          # - os: ubuntu-20.04
-          #   cuda: "11.2"
-          #   gcc: 10
-          # 18.04 supports CUDA 10.1+ (gxx <= 8)
-          # - os: ubuntu-18.04
-          #   cuda: "11.0"
-          #   gcc: 8
-          # - os: ubuntu-18.04
-          #   cuda: "10.2"
-          #   gcc: 8
+            cuda: "11.2"
+            compiler: gcc-10
+
+          - os: ubuntu-20.04
+            cuda: "11.2"
+            compiler: clang-9
+
           - os: ubuntu-18.04
             cuda: "10.1"
-            gcc: 8
+            compiler: gcc-8
 
-          # 16.04 supports CUDA 8+
-          # - os: ubuntu-16.04
-          #   cuda: "11.0"
-          #   gcc: 7
-          # - os: ubuntu-16.04
-          #   cuda: "10.2"
-          #   gcc: 7
-          # - os: ubuntu-16.04
-          #   cuda: "10.1"
-          #   gcc: 7
-          # - os: ubuntu-16.04
-          #   cuda: "10.0"
-          #   gcc: 7
-          # - os: ubuntu-16.04
-          #   cuda: "9.2"
-          #   gcc: 7
-          # - os: ubuntu-16.04
-          #   cuda: "9.1"
-          #   gcc: 6
-          - os: ubuntu-16.04
-            cuda: "9.0"
-            gcc: 6
-
-          # Libraries-dev subpackage does not exist for CUDA 8. Should make a better way of providing version specific subpackages.
-          # - os: ubuntu-16.04
-          #   cuda: "8.0"
-          #   gcc: 6
     env:
       build_dir: "build"
       config: "Release"
@@ -80,12 +43,25 @@ jobs:
       shell: bash
 
     # Specify the correct host compilers
-    - name: Install/Select gcc and g++ 
+    - name: Install/Select GCC
+      if: ${{ startsWith(matrix.compiler, 'gcc')}}
       run: |
-        sudo apt-get install -y gcc-${{ matrix.gcc }} g++-${{ matrix.gcc }}
-        echo "CC=/usr/bin/gcc-${{ matrix.gcc }}" >> $GITHUB_ENV
-        echo "CXX=/usr/bin/g++-${{ matrix.gcc }}" >> $GITHUB_ENV
-        echo "CUDAHOSTCXX=/usr/bin/g++-${{ matrix.gcc }}" >> $GITHUB_ENV
+        compiler=${{ matrix.compiler }}
+        gcc_version=${compiler/gcc-/}
+        sudo apt-get install -y gcc-${gcc_version} g++-${gcc_version}
+        echo "CC=/usr/bin/gcc-${gcc_version}" >> $GITHUB_ENV
+        echo "CXX=/usr/bin/g++-${gcc_version}" >> $GITHUB_ENV
+        echo "CUDAHOSTCXX=/usr/bin/g++-${gcc_version}" >> $GITHUB_ENV
+
+    - name: Install/Select Clang
+      if: ${{ startsWith(matrix.compiler, 'clang')}}
+      run: |
+        compiler=${{ matrix.compiler }}
+        clang_version=${compiler/clang-/}
+        sudo apt-get install -y clang-${clang_version} clang-tools-${clang_version}
+        echo "CC=/usr/bin/clang-${clang_version}" >> $GITHUB_ENV
+        echo "CXX=/usr/bin/clang++-${clang_version}" >> $GITHUB_ENV
+        echo "CUDAHOSTCXX=/usr/bin/clang++-${clang_version}" >> $GITHUB_ENV
 
     - name: Configure cmake
       id: configure
@@ -105,8 +81,6 @@ jobs:
             cat CMakeFiles/CMakeError.log
             echo "----"
           fi
-
-
 
     - name: Build everything else
       working-directory: ${{ env.build_dir }}
