@@ -26,7 +26,7 @@ jobs:
           - os: ubuntu-20.04
             cuda: "11.3"
             gcc: 10
-            container: nvidia/cuda:11.4.1-devel-ubuntu18.04
+            container: nvidia/cuda:11.4.1-devel-ubuntu20.04
     env:
       build_dir: "build"
       config: "Release"
