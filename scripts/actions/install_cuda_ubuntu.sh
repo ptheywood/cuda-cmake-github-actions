@@ -117,17 +117,41 @@ echo "PIN_URL ${PIN_URL}"
 echo "APT_KEY_URL ${APT_KEY_URL}"
 
 ## -----------------
+## Check for root/sudo
+## -----------------
+
+# Detect if the script is being run as root, storing true/false in is_root.
+is_root=false
+if (( $EUID == 0)); then
+   is_root=true
+fi
+# Find if sudo is available
+has_sudo=false
+if command -v sudo &> /dev/null ; then
+    has_sudo=true
+fi
+# Decide if we can proceed or not (root or sudo is required) and if so store whether sudo should be used or not.
+if [ "$is_root" = false ] && [ "$has_sudo" = false ]; then
+    echo "Root or sudo is required. Aborting."
+    exit 1
+elif [ "$is_root" = false ] ; then
+    USE_SUDO=sudo
+else
+    USE_SUDO=
+fi
+
+## -----------------
 ## Install
 ## -----------------
 echo "Adding CUDA Repository"
 wget ${PIN_URL}
-sudo mv ${PIN_FILENAME} /etc/apt/preferences.d/cuda-repository-pin-600
-sudo apt-key adv --fetch-keys ${APT_KEY_URL}
-sudo add-apt-repository "deb ${REPO_URL} /"
-sudo apt-get update
+$USE_SUDO mv ${PIN_FILENAME} /etc/apt/preferences.d/cuda-repository-pin-600
+$USE_SUDO apt-key adv --fetch-keys ${APT_KEY_URL}
+$USE_SUDO add-apt-repository "deb ${REPO_URL} /"
+$USE_SUDO apt-get update
 
 echo "Installing CUDA packages ${CUDA_PACKAGES}"
-sudo apt-get -y install ${CUDA_PACKAGES}
+$USE_SUDO apt-get -y install ${CUDA_PACKAGES}
 
 if [[ $? -ne 0 ]]; then
     echo "CUDA Installation Error."
