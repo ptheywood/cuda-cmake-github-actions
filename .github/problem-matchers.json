@@ -44,7 +44,7 @@
             "owner": "nvcc",
             "pattern": [
                 {
-                    "regexp": "^(.*)\\((\\d+)\\):\\s+(warning|error)\\s*:\\s+(.*)$",
+                    "regexp": "^(?:\\s+\\d+\\>)?([^\\s].*)\\((\\d+)\\):\\s+(warning|error)\\s*:\\s+(.*)$",
                     "file": 1,
                     "line": 2,
                     "severity": 3,
