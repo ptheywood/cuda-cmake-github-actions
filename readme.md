@@ -1,52 +1,61 @@
 # CUDA + Cmake example using Github Actions
 
-This repo is a very simple CUDA application, used to GitHub Actions as a CI service for CUDA compilation.
+This repo contains CI installation scripts, workflow examples and a very simple CUDA application, to demonstrate the installation of the CUDA toolkit (but not driver) on GitHub Hosted runners.
+Execution of CUDA code is not (yet) possible on GitHub hosted runners.
 
-This will **potentially** be expanded to investigate self-hosted runner(s) for running tests locally.
+Network CUDA installers are used, with a hard-coded set of subpackages to install within each installation script, to avoid large and slow installation processes.
 
 [![Ubuntu](https://github.com/ptheywood/cuda-cmake-github-actions/workflows/Ubuntu/badge.svg)](https://github.com/ptheywood/cuda-cmake-github-actions/actions?query=workflow%3AUbuntu)
 [![Windows](https://github.com/ptheywood/cuda-cmake-github-actions/workflows/Windows/badge.svg)](https://github.com/ptheywood/cuda-cmake-github-actions/actions?query=workflow%3AWindows)
 
+## CUDA and GitHub Actions Version Compatibility
+
+CUDA is only supported with appropriate host compilers and host operating systems.
+
+This support matrix can be found in the CUDA documentation, but to summarise (at the time of writing): 
+
+
+| Runner | Host Compiler | CUDA |
+|--------|------|---------------|
+| [ubuntu-2204] | GCC 12 | >= `12.0` |
+| [ubuntu-2204] | GCC 6 - 11 | >= `11.7` |
+| [ubuntu-2004] | GCC 10 | >= `11.4`  (`11.4.1`) |
+| [ubuntu-2004] | GCC 6 - 9 | >= `11.0` |
+| [windows-2022] | Visual Studio 17 2022 | >= `11.6.0`  |
+| [windows-2019] | Visual Studio 16 2019 | >= `10.1.243` |
+
+Deprecated/Removed Runners previously supported:
+
+| Runner | Host Compiler | CUDA |
+|--------|------|---------------|
+| [ubuntu-1804] | GCC 10 | >= `11.4`  (`11.4.1`) |
+| [ubuntu-1804] | GCC 6 - 9 | >= `10.0` |
+
+[ubuntu-2204]: https://github.com/actions/runner-images/blob/main/images/linux/Ubuntu2204-Readme.md
+[ubuntu-2004]: https://github.com/actions/runner-images/blob/main/images/linux/Ubuntu2004-Readme.md
+[ubuntu-1804]: https://github.com/actions/runner-images/blob/main/images/linux/Ubuntu1804-Readme.md
+[windows-2022]: https://github.com/actions/runner-images/blob/main/images/win/Windows2022-Readme.md
+[windows-2019]: https://github.com/actions/runner-images/blob/master/images/win/Windows2019-Readme.md
+
 ## Sample application
 
-To be representative of a real world example this should include:
+To ensure the installed compilers are usable, a very simple CUDA C++ test application is included, requiring CMake >= 3.10 for native CUDA support. 3.18+ has much improved CUDA support.
 
-+ `cmake` for cross platform build tooling
-+ `nvcc` to compile .cu code.
-+ some form of test script?
+It simply prints `hello world` from the host and from a single thread on the device.
 
-## Compilation
+This does not specify any cuda architectures to target, using the nvcc defaults. From CMake 3.18, use `CMAKE_CUDA_ARCHITECTURES`.
+
+### Compilation
 
 ```bash
-mkdir -p build
-cd build
+mkdir -p build && cd build
 cmake .. 
-make
+cmake --build .
 ```
 
-## Execution
+### Execution
 
 ```bash
 cd build
 ./main
 ```
-
-## Version Compatibility
-
-CUDA is only supported with appropriate host compilers.
-
-This support matrix can be found in the CUDA documentation, however, there are some obvious caveats related to the current state of github actions (at the time of writing)
-
-+ [Windows-2019](https://github.com/actions/virtual-environments/blob/master/images/win/Windows2019-Readme.md#visual-studio-2019-enterprise)
-    + Visual Studio `16.5.5` which maps to [`_MSC_VER 1925`](https://docs.microsoft.com/en-us/cpp/preprocessor/predefined-macros?view=vs-2019)
-        + `CUDA >= 10.1`
-            + `CUDA 10.0` requires `_MSC_VER` between `1700` and `1920`
-+ [Ubuntu 18.04](https://github.com/actions/virtual-environments/blob/master/images/linux/Ubuntu1804-README.md#ubuntu-18044-lts)
-    + GNU C++ `7.5.0`, `8.4.0` & `9.3.0` are available
-    + CUDA `10.0+` are available in the apt repository.
-        + You can use the older `1604` apt repo to enable `CUDA 8.0+`
-+ [Ubuntu 20.04](https://github.com/actions/virtual-environments/blob/master/images/linux/Ubuntu2004-README.md#ubuntu-20044-lts)
-    + GNU C++  `9.4.0`, `10.3.0` are available#
-        + GNU C++ `10.3.0` leads to errors when using `<chrono>` with NVCC in `--std=C++17` mode. This has been addressed in GCC, but the patch hasn't made it to Ubuntu packaged GCC.
-    + CUDA `11.0+` are available in the apt repository.
-        + You can use the older `1804` apt repo to enable `CUDA 10.0+`, but this is an unsupported configuration which may lead to errors.
