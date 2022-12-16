@@ -7,14 +7,14 @@
 # @todo - pass this in from outside the script? 
 # @todo - check the specified subpackages exist via apt pre-install?  apt-rdepends cuda-9-0 | grep "^cuda-"?
 
-# Ideally choose from the list of meta-packages to minimise variance between cuda versions (although it does change too). Some of these packages may not be availble pre cuda 10.
+# Ideally choose from the list of meta-packages to minimise variance between cuda versions (although it does change too). Some of these packages may not be availble in older CUDA releases
 CUDA_PACKAGES_IN=(
     "cuda-compiler"
     "cuda-cudart-dev"
     "cuda-nvtx"
     "cuda-nvrtc-dev"
     "libcurand-dev" # 11-0+
-    "cuda-cccl" # 11.4+, provides cub and thrust. On 11.3 knwon as cuda-thrust-11-3
+    "cuda-cccl" # 11.4+, provides cub and thrust. On 11.3 known as cuda-thrust-11-3
 )
 
 ## -------------------
@@ -183,7 +183,6 @@ export LD_LIBRARY_PATH="$CUDA_PATH/lib:$LD_LIBRARY_PATH"
 export LD_LIBRARY_PATH="$CUDA_PATH/lib64:$LD_LIBRARY_PATH"
 # Check nvcc is now available.
 nvcc -V
-
 
 # If executed on github actions, make the appropriate echo statements to update the environment
 if [[ $GITHUB_ACTIONS ]]; then
