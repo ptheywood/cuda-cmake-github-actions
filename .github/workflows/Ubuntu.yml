@@ -1,18 +1,14 @@
 # Compile project on Ubuntu
 name: Ubuntu
-
 on:
   push:
     paths:
       - "**"
       - "!.github/**"
       - ".github/workflows/Ubuntu.yml"
-  # pull_request:
-  #   paths:
-  #     - "**"
-  #     - "!.github"
-  #     - ".github/workflows/Ubuntu.yml"
-
+      - "!scripts/"
+      - "scripts/actions/install_cuda_ubuntu.sh"
+      - "!*.md"
 jobs:
   build:
     runs-on: ${{ matrix.os }}
