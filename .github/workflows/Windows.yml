@@ -1,18 +1,14 @@
 # Windows builds.
 name: Windows
-
 on:
   push:
     paths:
       - "**"
       - "!.github/**"
       - ".github/workflows/Windows.yml"
-  # pull_request:
-  #   paths:
-  #     - "**"
-  #     - "!.github"
-  #     - ".github/workflows/Windows.yml"
-
+      - "!scripts"
+      - "scripts/install_cuda_windows.ps1"
+      - "!*.md"
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -21,33 +17,51 @@ jobs:
       # explicit include-based build matrix, of known valid options
       matrix:
         include:
-          # Windows2019 & VS 2019 supports 10.1+
+          # Windows-2022 & VS 2022 supports 11.6+
+          - os: windows-2022
+            cuda: "12.0.0"
+            visual_studio: "Visual Studio 17 2022"
+          - os: windows-2022
+            cuda: "11.8.0"
+            visual_studio: "Visual Studio 17 2022"
+          - os: windows-2022
+            cuda: "11.7.0"
+            visual_studio: "Visual Studio 17 2022"
+          - os: windows-2022
+            cuda: "11.6.0"
+            visual_studio: "Visual Studio 17 2022"
+          # Windows-2019 & VS 2019 supports 10.1+
+          - os: windows-2019
+            cuda: "11.5.0"
+            visual_studio: "Visual Studio 16 2019"
+          - os: windows-2019
+            cuda: "11.4.0"
+            visual_studio: "Visual Studio 16 2019"
           - os: windows-2019
             cuda: "11.3.0"
             visual_studio: "Visual Studio 16 2019"
-          # - os: windows-2019
-          #   cuda: "11.2.2"
-          #   visual_studio: "Visual Studio 16 2019"
-          # - os: windows-2019
-          #   cuda: "11.1.1"
-          #   visual_studio: "Visual Studio 16 2019"
-          # - os: windows-2019
-          #   cuda: "11.0.3"
-          #   visual_studio: "Visual Studio 16 2019"
-          # - os: windows-2019
-          #   cuda: "10.2.89"
-          #   visual_studio: "Visual Studio 16 2019"
-          # - os: windows-2019
-          #   cuda: "10.1.243"
-          #   visual_studio: "Visual Studio 16 2019"
-
+          - os: windows-2019
+            cuda: "11.2.0"
+            visual_studio: "Visual Studio 16 2019"
+          - os: windows-2019
+            cuda: "11.1.0"
+            visual_studio: "Visual Studio 16 2019"
+          - os: windows-2019
+            cuda: "11.0.1"
+            visual_studio: "Visual Studio 16 2019"
+          - os: windows-2019
+            cuda: "10.2.89"
+            visual_studio: "Visual Studio 16 2019"
+          - os: windows-2019
+            cuda: "10.1.243"
+            visual_studio: "Visual Studio 16 2019"
 
     env:
       build_dir: "build"
       config: "Release"
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Install CUDA
       env: 
@@ -75,18 +89,20 @@ jobs:
 
     - name: Configure Error Processing
       if: ${{ (failure() && steps.configure.outcome == 'failure') || success() }}
-      working-directory: ${{ env.build_dir }}
       shell: bash
       run: |
-          if [[ -f "CMakeFiles/CMakeOutput.log" ]]; then
-            echo "---- CMakeFiles/CMakeOutput.log"
-            cat CMakeFiles/CMakeOutput.log
-            echo "----"
-          fi
-          if [[ -f "CMakeFiles/CMakeError.log" ]]; then
-            echo "---- CMakeFiles/CMakeError.log"
-            cat CMakeFiles/CMakeError.log
-            echo "----"
+          if [[ -d "${{ env.build_dir }}" ]]; then
+            pushd "${{ env.build_dir }}"
+            if [[ -f "CMakeFiles/CMakeOutput.log" ]]; then
+              echo "---- CMakeFiles/CMakeOutput.log"
+              cat CMakeFiles/CMakeOutput.log
+              echo "----"
+            fi
+            if [[ -f "CMakeFiles/CMakeError.log" ]]; then
+              echo "---- CMakeFiles/CMakeError.log"
+              cat CMakeFiles/CMakeError.log
+              echo "----"
+            fi
           fi
 
     - name: Build
