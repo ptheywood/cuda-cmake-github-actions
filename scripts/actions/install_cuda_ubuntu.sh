@@ -127,7 +127,6 @@ REPO_URL="https://developer.download.nvidia.com/compute/cuda/repos/ubuntu${UBUNT
 echo "PIN_FILENAME ${PIN_FILENAME}"
 echo "PIN_URL ${PIN_URL}"
 echo "KEYRING_PACKAGE_URL ${KEYRING_PACKAGE_URL}"
-echo "APT_KEY_URL ${APT_KEY_URL}"
 
 ## -----------------
 ## Check for root/sudo
