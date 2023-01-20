@@ -5,6 +5,7 @@ on:
     paths:
       - "**"
       - "!.github/**"
+      - ".github/problem-matchers.json"
       - ".github/workflows/Windows.yml"
       - "!scripts"
       - "scripts/install_cuda_windows.ps1"
@@ -69,6 +70,9 @@ jobs:
         visual_studio: ${{ matrix.visual_studio }}
       shell: powershell
       run: .\scripts\actions\install_cuda_windows.ps1
+
+    - name: Add custom problem matchers for annotations
+      run: echo "::add-matcher::.github/problem-matchers.json"
 
     - name: nvcc check
       shell: powershell

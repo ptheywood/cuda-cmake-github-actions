@@ -5,6 +5,7 @@ on:
     paths:
       - "**"
       - "!.github/**"
+      - ".github/problem-matchers.json"
       - ".github/workflows/Ubuntu.yml"
       - "!scripts/"
       - "scripts/actions/install_cuda_ubuntu.sh"
@@ -67,6 +68,9 @@ jobs:
         cuda: ${{ matrix.cuda }}
       run: ./scripts/actions/install_cuda_ubuntu.sh
       shell: bash
+
+    - name: Add custom problem matchers for annotations
+      run: echo "::add-matcher::.github/problem-matchers.json"
 
     # Specify the correct host compilers
     - name: Install/Select gcc and g++ 
