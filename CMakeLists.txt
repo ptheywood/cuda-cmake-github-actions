@@ -22,7 +22,32 @@ if (USE_CHECK_LANGUAGE)
         enable_language(CUDA)
     else()
         # If using MSVC >= 1940 then CUDA <= 12.3 support requires -allow-unsupported-compiler, so warn about this
-        if(MSVC AND MSVC_VERSION VERSION_GREATER_EQUAL "1940")
+        if(MSVC AND MSVC_VERSION VERSION_GREATER_EQUAL "1941")
+            if(CMAKE_VERSION VERSION_LESS "3.29.4")
+                message(FATAL_ERROR 
+                    " CUDA Language support detection failed with MSVC ${MSVC_VERSION}\n"
+                    " \n"
+                    " If you have CUDA <= 12.3 installed:\n"
+                    "  - You must upgrade CMake to be >= 3.29.4\n"
+                    "    The CUDAFLAGS environment variable must include '-allow-unsupported-compiler'\n"
+                    "    @todo - something about defining _ALLOW_COMPILER_AND_STL_VERSION_MISMATCH\n"
+                    "    You must clear the CMake Cache before reconfiguring this project\n"
+                    " \n"
+                    "  - Alternatively you may upgrade CUDA to >= 12.4 and clear the CMake Cache before reconfiguring"
+                )
+            else()
+                message(FATAL_ERROR 
+                    " CUDA Language support detection failed with MSVC ${MSVC_VERSION}\n"
+                    " \n"
+                    " If you have CUDA <= 12.3 installed:\n"
+                    "  - The CUDAFLAGS environment variable must include '-allow-unsupported-compiler'\n"
+                    "    @todo - something about defining _ALLOW_COMPILER_AND_STL_VERSION_MISMATCH\n"
+                    "    You must clear the CMake Cache before reconfiguring this project\n"
+                    " \n"
+                    "  - Alternatively you may upgrade CUDA to >= 12.4 and clear the CMake Cache before reconfiguring"
+                )
+            if()
+        elseif(MSVC AND MSVC_VERSION VERSION_GREATER_EQUAL "1940")
             # If this is the case, then CMake >= 3.29.4 is also required, otherwise CMake does not pass -allow-unsupported-compiler along, warn as appropriate
             if(CMAKE_VERSION VERSION_LESS "3.29.4")
                 message(FATAL_ERROR 
