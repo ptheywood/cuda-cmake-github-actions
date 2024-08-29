@@ -17,48 +17,82 @@ jobs:
       # explicit include-based build matrix, of known valid options
       matrix:
         include:
+          # - os: windows-2022
+          #   cuda: "12.5.0"
+          #   visual_studio: "Visual Studio 17 2022"
+          # - os: windows-2022
+          #   cuda: "12.4.0"
+          #   visual_studio: "Visual Studio 17 2022"
+          #   cmake: "3.29.5"
+          # - os: windows-2022
+          #   cuda: "12.3.0"
+          #   visual_studio: "Visual Studio 17 2022"
+          #   cmake: "3.29.5"
+          # - os: windows-2022
+          #   cuda: "12.4.0"
+          #   visual_studio: "Visual Studio 17 2022"
+          #   cmake: "3.29.3"
+          # - os: windows-2022
+          #   cuda: "12.3.0"
+          #   visual_studio: "Visual Studio 17 2022"
+          #   cmake: "3.29.3"
+          - os: windows-2022
+            cuda: "12.3.0"
+            visual_studio: "Visual Studio 17 2022"
+            cmake: ""
+            check_language: "ON"
+          - os: windows-2022
+            cuda: "12.3.0"
+            visual_studio: "Visual Studio 17 2022"
+            cmake: ""
+            check_language: "OFF"
+            
           # Windows-2022 & VS 2022 supports 11.6+
-          - os: windows-2022
-            cuda: "12.0.0"
-            visual_studio: "Visual Studio 17 2022"
-          - os: windows-2022
-            cuda: "11.8.0"
-            visual_studio: "Visual Studio 17 2022"
-          - os: windows-2022
-            cuda: "11.7.0"
-            visual_studio: "Visual Studio 17 2022"
-          - os: windows-2022
-            cuda: "11.6.0"
-            visual_studio: "Visual Studio 17 2022"
-          # Windows-2019 & VS 2019 supports 10.1+
-          - os: windows-2019
-            cuda: "11.5.0"
-            visual_studio: "Visual Studio 16 2019"
-          - os: windows-2019
-            cuda: "11.4.0"
-            visual_studio: "Visual Studio 16 2019"
-          - os: windows-2019
-            cuda: "11.3.0"
-            visual_studio: "Visual Studio 16 2019"
-          - os: windows-2019
-            cuda: "11.2.0"
-            visual_studio: "Visual Studio 16 2019"
-          - os: windows-2019
-            cuda: "11.1.0"
-            visual_studio: "Visual Studio 16 2019"
-          - os: windows-2019
-            cuda: "11.0.1"
-            visual_studio: "Visual Studio 16 2019"
-          - os: windows-2019
-            cuda: "10.2.89"
-            visual_studio: "Visual Studio 16 2019"
-          - os: windows-2019
-            cuda: "10.1.243"
-            visual_studio: "Visual Studio 16 2019"
+          # - os: windows-2022
+          #   cuda: "12.0.0"
+          #   visual_studio: "Visual Studio 17 2022"
+          # - os: windows-2022
+          #   cuda: "11.8.0"
+          #   visual_studio: "Visual Studio 17 2022"
+          # - os: windows-2022
+          #   cuda: "11.7.0"
+          #   visual_studio: "Visual Studio 17 2022"
+          # - os: windows-2022
+          #   cuda: "11.6.0"
+          #   visual_studio: "Visual Studio 17 2022"
+          # # Windows-2019 & VS 2019 supports 10.1+
+          # - os: windows-2019
+          #   cuda: "11.5.0"
+          #   visual_studio: "Visual Studio 16 2019"
+          # - os: windows-2019
+          #   cuda: "11.4.0"
+          #   visual_studio: "Visual Studio 16 2019"
+          # - os: windows-2019
+          #   cuda: "11.3.0"
+          #   visual_studio: "Visual Studio 16 2019"
+          # - os: windows-2019
+          #   cuda: "11.2.0"
+          #   visual_studio: "Visual Studio 16 2019"
+          # - os: windows-2019
+          #   cuda: "11.1.0"
+          #   visual_studio: "Visual Studio 16 2019"
+          # - os: windows-2019
+          #   cuda: "11.0.1"
+          #   visual_studio: "Visual Studio 16 2019"
+          # - os: windows-2019
+          #   cuda: "10.2.89"
+          #   visual_studio: "Visual Studio 16 2019"
+          # - os: windows-2019
+          #   cuda: "10.1.243"
+          #   visual_studio: "Visual Studio 16 2019"
 
     env:
       build_dir: "build"
       config: "Release"
+      CMAKE: ${{ matrix.cmake }}
+      CUDAFLAGS: "-allow-unsupported-compiler"
+      CXXFLAGS: "-D_ALLOW_COMPILER_AND_STL_VERSION_MISMATCH"
+      CHECK_LANGUAGE: ${{ matrix.check_language }}
 
     steps:
     - uses: actions/checkout@v3
@@ -78,6 +112,15 @@ jobs:
         ls $env:CUDA_PATH\bin
         ls $env:CUDA_PATH\include
 
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.10' 
+
+    - name: Install cmake
+      if: ${{ env.CMAKE != '' && env.CMAKE != 'default' }}
+      working-directory: ${{ runner.temp }}
+      run: python -m pip install cmake==${{ env.CMAKE }}
+
     - name: cmake version
       shell: bash
       run: cmake --version
@@ -85,7 +128,7 @@ jobs:
     - name: Configure CMake
       id: configure
       shell: bash
-      run: cmake . -B ${{ env.build_dir }} -G "${{ matrix.visual_studio }}" -A x64 
+      run: cmake . -B ${{ env.build_dir }} -G "${{ matrix.visual_studio }}" -A x64 -DUSE_CHECK_LANGUAGE=${{ env.CHECK_LANGUAGE }}
 
     - name: Configure Error Processing
       if: ${{ (failure() && steps.configure.outcome == 'failure') || success() }}
