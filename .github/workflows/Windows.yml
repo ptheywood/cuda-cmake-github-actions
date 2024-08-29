@@ -20,26 +20,32 @@ jobs:
           # - os: windows-2022
           #   cuda: "12.5.0"
           #   visual_studio: "Visual Studio 17 2022"
-          - os: windows-2022
-            cuda: "12.4.0"
-            visual_studio: "Visual Studio 17 2022"
-            cmake: "3.29.5"
-          - os: windows-2022
-            cuda: "12.3.0"
-            visual_studio: "Visual Studio 17 2022"
-            cmake: "3.29.5"
-          - os: windows-2022
-            cuda: "12.4.0"
-            visual_studio: "Visual Studio 17 2022"
-            cmake: "3.29.3"
-          - os: windows-2022
-            cuda: "12.3.0"
-            visual_studio: "Visual Studio 17 2022"
-            cmake: "3.29.3"
+          # - os: windows-2022
+          #   cuda: "12.4.0"
+          #   visual_studio: "Visual Studio 17 2022"
+          #   cmake: "3.29.5"
+          # - os: windows-2022
+          #   cuda: "12.3.0"
+          #   visual_studio: "Visual Studio 17 2022"
+          #   cmake: "3.29.5"
+          # - os: windows-2022
+          #   cuda: "12.4.0"
+          #   visual_studio: "Visual Studio 17 2022"
+          #   cmake: "3.29.3"
+          # - os: windows-2022
+          #   cuda: "12.3.0"
+          #   visual_studio: "Visual Studio 17 2022"
+          #   cmake: "3.29.3"
           - os: windows-2022
             cuda: "12.3.0"
             visual_studio: "Visual Studio 17 2022"
             cmake: ""
+            check_language: "ON"
+          - os: windows-2022
+            cuda: "12.3.0"
+            visual_studio: "Visual Studio 17 2022"
+            cmake: ""
+            check_language: "OFF"
             
           # Windows-2022 & VS 2022 supports 11.6+
           # - os: windows-2022
@@ -85,6 +91,7 @@ jobs:
       config: "Release"
       CMAKE: ${{ matrix.cmake }}
       CUDAFLAGS: "-allow-unsupported-compiler"
+      CHECK_LANGUAGE: ${{ matrix.check_language }}
 
     steps:
     - uses: actions/checkout@v3
@@ -120,7 +127,7 @@ jobs:
     - name: Configure CMake
       id: configure
       shell: bash
-      run: cmake . -B ${{ env.build_dir }} -G "${{ matrix.visual_studio }}" -A x64
+      run: cmake . -B ${{ env.build_dir }} -G "${{ matrix.visual_studio }}" -A x64 -DUSE_CHECK_LANGUAGE=${{ env.CHECK_LANGUAGE }}
 
     - name: Configure Error Processing
       if: ${{ (failure() && steps.configure.outcome == 'failure') || success() }}
