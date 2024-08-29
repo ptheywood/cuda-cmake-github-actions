@@ -90,7 +90,7 @@ jobs:
       build_dir: "build"
       config: "Release"
       CMAKE: ${{ matrix.cmake }}
-      CUDAFLAGS: "-allow-unsupported-compiler"
+      CUDAFLAGS: "-allow-unsupported-compiler -D_ALLOW_COMPILER_AND_STL_VERSION_MISMATCH"
       CXXFLAGS: "-D_ALLOW_COMPILER_AND_STL_VERSION_MISMATCH"
       CHECK_LANGUAGE: ${{ matrix.check_language }}
 
