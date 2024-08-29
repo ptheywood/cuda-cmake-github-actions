@@ -36,6 +36,10 @@ jobs:
             cuda: "12.3.0"
             visual_studio: "Visual Studio 17 2022"
             cmake: "3.29.3"
+          - os: windows-2022
+            cuda: "12.3.0"
+            visual_studio: "Visual Studio 17 2022"
+            cmake: ""
             
           # Windows-2022 & VS 2022 supports 11.6+
           # - os: windows-2022
