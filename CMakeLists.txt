@@ -46,7 +46,7 @@ if (USE_CHECK_LANGUAGE)
                     " \n"
                     "  - Alternatively you may upgrade CUDA to >= 12.4 and clear the CMake Cache before reconfiguring"
                 )
-            if()
+            endif()
         elseif(MSVC AND MSVC_VERSION VERSION_GREATER_EQUAL "1940")
             # If this is the case, then CMake >= 3.29.4 is also required, otherwise CMake does not pass -allow-unsupported-compiler along, warn as appropriate
             if(CMAKE_VERSION VERSION_LESS "3.29.4")
