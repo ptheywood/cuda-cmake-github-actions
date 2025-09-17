@@ -15,6 +15,7 @@ CUDA_PACKAGES_IN=(
     "cuda-nvrtc-dev"
     "libcurand-dev" # 11-0+
     "cuda-cccl" # 11.4+, provides cub and thrust. On 11.3 known as cuda-thrust-11-3
+    "libnvjitlink-dev" # 12.0+
 )
 
 ## -------------------
@@ -104,8 +105,11 @@ do :
             continue
         fi
     fi
+    # libnvjitlink not required prior to CUDA 12.0
+    if [[ ${package} == libnvjitlink-dev* ]] && version_lt "$CUDA_VERSION_MAJOR_MINOR" "12.0" ;then
+        continue
     # CUDA 11+ includes lib* / lib*-dev packages, which if they existed previously where cuda-cu*- / cuda-cu*-dev-
-    if [[ ${package} == libcu* ]] && version_lt "$CUDA_VERSION_MAJOR_MINOR" "11.0" ; then
+    elif [[ ${package} == lib* ]] && version_lt "$CUDA_VERSION_MAJOR_MINOR" "11.0" ; then
         package="${package/libcu/cuda-cu}"
     fi
     # Build the full package name and append to the string.
@@ -120,13 +124,14 @@ CPU_ARCH="x86_64"
 PIN_FILENAME="cuda-ubuntu${UBUNTU_VERSION}.pin"
 PIN_URL="https://developer.download.nvidia.com/compute/cuda/repos/ubuntu${UBUNTU_VERSION}/${CPU_ARCH}/${PIN_FILENAME}"
 # apt keyring package now available https://developer.nvidia.com/blog/updating-the-cuda-linux-gpg-repository-key/
-KERYRING_PACKAGE_FILENAME="cuda-keyring_1.0-1_all.deb"
+KERYRING_PACKAGE_FILENAME="cuda-keyring_1.1-1_all.deb"
 KEYRING_PACKAGE_URL="https://developer.download.nvidia.com/compute/cuda/repos/ubuntu${UBUNTU_VERSION}/${CPU_ARCH}/${KERYRING_PACKAGE_FILENAME}"
 REPO_URL="https://developer.download.nvidia.com/compute/cuda/repos/ubuntu${UBUNTU_VERSION}/${CPU_ARCH}/"
 
 echo "PIN_FILENAME ${PIN_FILENAME}"
 echo "PIN_URL ${PIN_URL}"
 echo "KEYRING_PACKAGE_URL ${KEYRING_PACKAGE_URL}"
+echo "APT_KEY_URL ${APT_KEY_URL}"
 
 ## -----------------
 ## Check for root/sudo
@@ -182,6 +187,7 @@ export LD_LIBRARY_PATH="$CUDA_PATH/lib:$LD_LIBRARY_PATH"
 export LD_LIBRARY_PATH="$CUDA_PATH/lib64:$LD_LIBRARY_PATH"
 # Check nvcc is now available.
 nvcc -V
+
 
 # If executed on github actions, make the appropriate echo statements to update the environment
 if [[ $GITHUB_ACTIONS ]]; then
