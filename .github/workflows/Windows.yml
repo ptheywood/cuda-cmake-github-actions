@@ -96,7 +96,7 @@ jobs:
 
         # Move files from each extracted zip directory into the actual location
         cp -Path "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\cuda_nvcc-windows-x86_64-13.0.88-archive\*" -Destination "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\" 
-        cp -Path "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\visual_studio_integration-windows-x86_64-13.0*. -Destination "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\" 85-archive\"
+        cp -Path "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\visual_studio_integration-windows-x86_64-13.0.85-archive\*" -Destination "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\"
         cp -Path "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\libcurand-windows-x86_64-10.4.0.35-archive\*" -Destination "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\" 
         cp -Path "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\cuda_nvrtc-windows-x86_64-13.0.88-archive\*" -Destination "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\" 
         cp -Path "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\cuda_cudart-windows-x86_64-13.0.88-archive\*" -Destination "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\" 
