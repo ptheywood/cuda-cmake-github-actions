@@ -20,13 +20,20 @@ jobs:
           # Windows-2022 & VS 2022 supports 12.4 without any workarounds
           - os: windows-2022
             cuda: "13.0.1"
+            redist: "true"
             visual_studio: "Visual Studio 17 2022"
           - os: windows-2022
-            cuda: "12.9.0"
+            cuda: "13.0.1"
+            redist: "false"
             visual_studio: "Visual Studio 17 2022"
-          - os: windows-2022
-            cuda: "12.4.0"
-            visual_studio: "Visual Studio 17 2022"
+          # - os: windows-2022
+          #   cuda: "12.9.0"
+          #   redist: "false"
+          #   visual_studio: "Visual Studio 17 2022"
+          # - os: windows-2022
+          #   cuda: "12.4.0"
+          #   redist: "false"
+          #   visual_studio: "Visual Studio 17 2022"
     env:
       build_dir: "build"
       config: "Release"
@@ -35,11 +42,74 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Install CUDA
+      if: ${{ matrix.redist == 'false' }}
       env: 
         cuda: ${{ matrix.cuda }}
         visual_studio: ${{ matrix.visual_studio }}
       shell: powershell
       run: .\scripts\actions\install_cuda_windows.ps1
+
+      # Note: redist doesnt' include dev headers of everything so this might not work...
+    - name: Install CUDA (redist)
+      if: ${{ matrix.redist == 'true' }}
+      env: 
+        cuda: ${{ matrix.cuda }}
+        visual_studio: ${{ matrix.visual_studio }}
+      shell: pwsh
+      run: |
+        curl -O "https://developer.download.nvidia.com/compute/cuda/redist/cuda_nvcc/windows-x86_64/cuda_nvcc-windows-x86_64-13.0.88-archive.zip"
+        curl -O "https://developer.download.nvidia.com/compute/cuda/redist/visual_studio_integration/windows-x86_64/visual_studio_integration-windows-x86_64-13.0.85-archive.zip"
+        curl -O "https://developer.download.nvidia.com/compute/cuda/redist/libcurand/windows-x86_64/libcurand-windows-x86_64-10.4.0.35-archive.zip"
+        curl -O "https://developer.download.nvidia.com/compute/cuda/redist/cuda_nvrtc/windows-x86_64/cuda_nvrtc-windows-x86_64-13.0.88-archive.zip"
+        curl -O "https://developer.download.nvidia.com/compute/cuda/redist/cuda_cudart/windows-x86_64/cuda_cudart-windows-x86_64-13.0.88-archive.zip"
+        curl -O "https://developer.download.nvidia.com/compute/cuda/redist/cuda_cccl/windows-x86_64/cuda_cccl-windows-x86_64-13.0.85-archive.zip"
+        curl -O "https://developer.download.nvidia.com/compute/cuda/redist/libnvjitlink/windows-x86_64/libnvjitlink-windows-x86_64-13.0.88-archive.zip"
+        curl -O "https://developer.download.nvidia.com/compute/cuda/redist/cuda_crt/windows-x86_64/cuda_crt-windows-x86_64-13.0.88-archive.zip"
+        curl -O "https://developer.download.nvidia.com/compute/cuda/redist/libnvptxcompiler/windows-x86_64/libnvptxcompiler-windows-x86_64-13.0.88-archive.zip"
+        curl -O "https://developer.download.nvidia.com/compute/cuda/redist/libnvvm/windows-x86_64/libnvvm-windows-x86_64-13.0.88-archive.zip"
+        # make the cuda toolkit dir
+        mkdir "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0"
+
+        # unzip all the zip files into the toolkit dir
+        7z.exe x "cuda_nvcc-windows-x86_64-13.0.88-archive.zip" -o"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\"
+        7z.exe x "visual_studio_integration-windows-x86_64-13.0.85-archive.zip" -o"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\"
+        7z.exe x "libcurand-windows-x86_64-10.4.0.35-archive.zip" -o"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\"
+        7z.exe x "cuda_nvrtc-windows-x86_64-13.0.88-archive.zip" -o"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\"
+        7z.exe x "cuda_cudart-windows-x86_64-13.0.88-archive.zip" -o"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\"
+        7z.exe x "cuda_cccl-windows-x86_64-13.0.85-archive.zip" -o"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\"
+        7z.exe x "libnvjitlink-windows-x86_64-13.0.88-archive.zip" -o"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\"
+        7z.exe x "cuda_crt-windows-x86_64-13.0.88-archive.zip" -o"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\"
+        7z.exe x "libnvptxcompiler-windows-x86_64-13.0.88-archive.zip" -o"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\"
+        7z.exe x "libnvvm-windows-x86_64-13.0.88-archive.zip" -o"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\"
+
+        # delete the zip files
+        rm "cuda_nvcc-windows-x86_64-13.0.88-archive.zip"
+        rm "visual_studio_integration-windows-x86_64-13.0.85-archive.zip"
+        rm "libcurand-windows-x86_64-10.4.0.35-archive.zip"
+        rm "cuda_nvrtc-windows-x86_64-13.0.88-archive.zip"
+        rm "cuda_cudart-windows-x86_64-13.0.88-archive.zip"
+        rm "cuda_cccl-windows-x86_64-13.0.85-archive.zip"
+        rm "libnvjitlink-windows-x86_64-13.0.88-archive.zip"
+        rm "cuda_crt-windows-x86_64-13.0.88-archive.zip"
+        rm "libnvptxcompiler-windows-x86_64-13.0.88-archive.zip"
+        rm "libnvvm-windows-x86_64-13.0.88-archive.zip"
+
+        # Move files from each extracted zip directory into the actual location
+        cp -Path "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\cuda_nvcc-windows-x86_64-13.0.88-archive\*" -Destination "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\" 
+        cp -Path "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\visual_studio_integration-windows-x86_64-13.0*. -Destination "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\" 85-archive\"
+        cp -Path "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\libcurand-windows-x86_64-10.4.0.35-archive\*" -Destination "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\" 
+        cp -Path "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\cuda_nvrtc-windows-x86_64-13.0.88-archive\*" -Destination "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\" 
+        cp -Path "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\cuda_cudart-windows-x86_64-13.0.88-archive\*" -Destination "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\" 
+        cp -Path "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\cuda_cccl-windows-x86_64-13.0.85-archive\*" -Destination "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\" 
+        cp -Path "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\libnvjitlink-windows-x86_64-13.0.88-archive\*" -Destination "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\" 
+        cp -Path "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\cuda_crt-windows-x86_64-13.0.88-archive\*" -Destination "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\" 
+        cp -Path "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\libnvptxcompiler-windows-x86_64-13.0.88-archive\*" -Destination "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\" 
+        cp -Path "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\libnvvm-windows-x86_64-13.0.88-archive\*" -Destination "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\" 
+
+        # Export env vars (pwsh required?)
+        "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\bin" >> $env:GITHUB_PATH
+        "CUDA_PATH=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0" >> $env:GITHUB_ENV
+        "CUDA_PATH_V13_0=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0" >> $env:GITHUB_ENV
 
     - name: nvcc check
       shell: powershell
