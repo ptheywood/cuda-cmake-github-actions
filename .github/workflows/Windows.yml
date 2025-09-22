@@ -108,6 +108,7 @@ jobs:
 
         # Export env vars (pwsh required?)
         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\bin" >> $env:GITHUB_PATH
+        "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0\nvvm" >> $env:GITHUB_PATH
         "CUDA_PATH=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0" >> $env:GITHUB_ENV
         "CUDA_PATH_V13_0=C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.0" >> $env:GITHUB_ENV
 
@@ -118,6 +119,11 @@ jobs:
         ls $env:CUDA_PATH
         ls $env:CUDA_PATH\bin
         ls $env:CUDA_PATH\include
+
+    - name: manual nvcc
+      shell: bash
+      run: |
+        nvcc -o main src/main.cu -Iinclude -Imain -std=c++14
 
     - name: cmake version
       shell: bash
