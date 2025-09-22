@@ -49,6 +49,11 @@ jobs:
       shell: powershell
       run: .\scripts\actions\install_cuda_windows.ps1
 
+    - name: vshwere test
+      shell: pwsh
+      run: | 
+        vswhere.exe -latest -products * -property installationPath
+
       # Note: redist doesnt' include dev headers of everything so this might not work...
     - name: Install CUDA (redist)
       if: ${{ matrix.redist == 'true' }}
@@ -57,6 +62,12 @@ jobs:
         visual_studio: ${{ matrix.visual_studio }}
       shell: pwsh
       run: |
+        # find the visual studio build-customisation directorie(s)
+        # $vs_path = & "vswhere.exe" -latest -products * -property installationPath
+
+        # Todo: download the manifest json and then do subpacakge matching
+
+        # Download cuda redist zips for relevant subpackages
         curl -O "https://developer.download.nvidia.com/compute/cuda/redist/cuda_nvcc/windows-x86_64/cuda_nvcc-windows-x86_64-13.0.88-archive.zip"
         curl -O "https://developer.download.nvidia.com/compute/cuda/redist/visual_studio_integration/windows-x86_64/visual_studio_integration-windows-x86_64-13.0.85-archive.zip"
         curl -O "https://developer.download.nvidia.com/compute/cuda/redist/libcurand/windows-x86_64/libcurand-windows-x86_64-10.4.0.35-archive.zip"
