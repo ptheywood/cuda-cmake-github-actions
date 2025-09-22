@@ -53,6 +53,19 @@ jobs:
       shell: pwsh
       run: | 
         vswhere.exe -latest -products * -property installationPath
+        
+        $vs_install_dir = vswhere -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+        if ($vs_install_dir) {
+          $vc_tools_version_path = join-path $vs_install_dir 'VC\Auxiliary\Build\Microsoft.VCToolsVersion.default.txt'
+          if (test-path $vc_tools_version_path) {
+            $version = gc -raw $vc_tools_version_path
+            if ($version) {
+              $version = $version.Trim()
+              $path = join-path $vs_install_dir "VC\Tools\MSVC\$version\bin\Hostx64\x64\cl.exe"
+              echo "$path"
+            }
+          }
+        }
 
       # Note: redist doesnt' include dev headers of everything so this might not work...
     - name: Install CUDA (redist)
@@ -64,6 +77,7 @@ jobs:
       run: |
         # find the visual studio build-customisation directorie(s)
         # $vs_path = & "vswhere.exe" -latest -products * -property installationPath
+        
 
         # Todo: download the manifest json and then do subpacakge matching
 
