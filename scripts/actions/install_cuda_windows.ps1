@@ -6,16 +6,6 @@
 # From 11.0, the download url/toolkit version is separate from the cudart version.
 # Releases since 11.5.1 (including 11.4.4) use `windows` rather than `win10` in the uri, due to windows 11 inclusion
 $CUDA_KNOWN_URLS = @{
-    "8.0.44"   = "https://developer.nvidia.com/compute/cuda/8.0/Prod/network_installers/cuda_8.0.44_win10_network-exe";
-    "8.0.61"   = "https://developer.nvidia.com/compute/cuda/8.0/Prod2/network_installers/cuda_8.0.61_win10_network-exe";
-    "9.0.176"  = "https://developer.nvidia.com/compute/cuda/9.0/Prod/network_installers/cuda_9.0.176_win10_network-exe";
-    "9.1.85"   = "https://developer.nvidia.com/compute/cuda/9.1/Prod/network_installers/cuda_9.1.85_win10_network";
-    "9.2.148"  = "https://developer.nvidia.com/compute/cuda/9.2/Prod2/network_installers2/cuda_9.2.148_win10_network";
-    "10.0.130" = "https://developer.nvidia.com/compute/cuda/10.0/Prod/network_installers/cuda_10.0.130_win10_network";
-    "10.1.105" = "https://developer.nvidia.com/compute/cuda/10.1/Prod/network_installers/cuda_10.1.105_win10_network.exe";
-    "10.1.168" = "https://developer.nvidia.com/compute/cuda/10.1/Prod/network_installers/cuda_10.1.168_win10_network.exe";
-    "10.1.243" = "https://developer.download.nvidia.com/compute/cuda/10.1/Prod/network_installers/cuda_10.1.243_win10_network.exe";
-    "10.2.89"  = "https://developer.download.nvidia.com/compute/cuda/10.2/Prod/network_installers/cuda_10.2.89_win10_network.exe";
     "11.0.1" = "https://developer.download.nvidia.com/compute/cuda/11.0.1/network_installers/cuda_11.0.1_win10_network.exe";
     "11.0.2" = "https://developer.download.nvidia.com/compute/cuda/11.0.2/network_installers/cuda_11.0.2_win10_network.exe";
     "11.0.3" = "https://developer.download.nvidia.com/compute/cuda/11.0.3/network_installers/cuda_11.0.3_win10_network.exe";
@@ -40,15 +30,35 @@ $CUDA_KNOWN_URLS = @{
     "11.7.0" = "https://developer.download.nvidia.com/compute/cuda/11.7.0/network_installers/cuda_11.7.0_windows_network.exe";
     "11.7.1" = "https://developer.download.nvidia.com/compute/cuda/11.7.1/network_installers/cuda_11.7.1_windows_network.exe";
     "11.8.0" = "https://developer.download.nvidia.com/compute/cuda/11.8.0/network_installers/cuda_11.8.0_windows_network.exe";
-    "12.0.0" = "https://developer.download.nvidia.com/compute/cuda/12.0.0/network_installers/cuda_12.0.0_windows_network.exe"
+    "12.0.0" = "https://developer.download.nvidia.com/compute/cuda/12.0.0/network_installers/cuda_12.0.0_windows_network.exe";
+    "12.0.1" = "https://developer.download.nvidia.com/compute/cuda/12.0.1/network_installers/cuda_12.0.1_windows_network.exe";
+    "12.1.0" = "https://developer.download.nvidia.com/compute/cuda/12.1.0/network_installers/cuda_12.1.0_windows_network.exe";
+    "12.2.0" = "https://developer.download.nvidia.com/compute/cuda/12.2.0/network_installers/cuda_12.2.0_windows_network.exe";
+    "12.2.1" = "https://developer.download.nvidia.com/compute/cuda/12.2.1/network_installers/cuda_12.2.1_windows_network.exe";
+    "12.2.2" = "https://developer.download.nvidia.com/compute/cuda/12.2.2/network_installers/cuda_12.2.2_windows_network.exe";
+    "12.3.0" = "https://developer.download.nvidia.com/compute/cuda/12.3.0/network_installers/cuda_12.3.0_windows_network.exe";
+    "12.3.1" = "https://developer.download.nvidia.com/compute/cuda/12.3.1/network_installers/cuda_12.3.1_windows_network.exe";
+    "12.3.2" = "https://developer.download.nvidia.com/compute/cuda/12.3.2/network_installers/cuda_12.3.2_windows_network.exe";
+    "12.4.0" = "https://developer.download.nvidia.com/compute/cuda/12.4.0/network_installers/cuda_12.4.0_windows_network.exe";
+    "12.4.1" = "https://developer.download.nvidia.com/compute/cuda/12.4.1/network_installers/cuda_12.4.1_windows_network.exe";
+    "12.5.0" = "https://developer.download.nvidia.com/compute/cuda/12.5.0/network_installers/cuda_12.5.0_windows_network.exe";
+    "12.5.1" = "https://developer.download.nvidia.com/compute/cuda/12.5.1/network_installers/cuda_12.5.1_windows_network.exe";
+    "12.6.0" = "https://developer.download.nvidia.com/compute/cuda/12.6.0/network_installers/cuda_12.6.0_windows_network.exe";
+    "12.6.1" = "https://developer.download.nvidia.com/compute/cuda/12.6.1/network_installers/cuda_12.6.1_windows_network.exe";
+    "12.6.2" = "https://developer.download.nvidia.com/compute/cuda/12.6.2/network_installers/cuda_12.6.2_windows_network.exe";
+    "12.6.3" = "https://developer.download.nvidia.com/compute/cuda/12.6.3/network_installers/cuda_12.6.3_windows_network.exe";
+    "12.8.0" = "https://developer.download.nvidia.com/compute/cuda/12.8.0/network_installers/cuda_12.8.0_windows_network.exe";
+    "12.8.1" = "https://developer.download.nvidia.com/compute/cuda/12.8.1/network_installers/cuda_12.8.1_windows_network.exe";
+    "12.9.0" = "https://developer.download.nvidia.com/compute/cuda/12.9.0/network_installers/cuda_12.9.0_windows_network.exe";
+    "12.9.1" = "https://developer.download.nvidia.com/compute/cuda/12.9.1/network_installers/cuda_12.9.1_windows_network.exe";
+    "13.0.0" = "https://developer.download.nvidia.com/compute/cuda/13.0.0/network_installers/cuda_13.0.0_windows_network.exe";
+    "13.0.1" = "https://developer.download.nvidia.com/compute/cuda/13.0.1/network_installers/cuda_13.0.1_windows_network.exe";
 }
 
 # @todo - change this to be based on _MSC_VER intead, or invert it to be CUDA keyed instead
 $VISUAL_STUDIO_MIN_CUDA = @{
     "2022" = "11.6.0";
     "2019" = "10.1";
-    "2017" = "10.0"; # Depends on which version of 2017! 9.0 to 10.0 depending on version
-    "2015" = "8.0";  # Might support older, unsure. Depracated as of 11.1, unsupported in 11.2
 }
 
 # cuda_runtime.h is in nvcc <= 10.2, but cudart >= 11.0
@@ -60,6 +70,12 @@ $CUDA_PACKAGES_IN = @(
     "nvrtc_dev";
     "cudart";
     "thrust";
+    "thrust";
+    "nvjitlink";
+    # cuda 13+ packages
+    "crt";
+    "nvptxcompiler";
+    "nvvm";
 )
 
 ## -------------------
@@ -112,6 +128,18 @@ Foreach ($package in $CUDA_PACKAGES_IN) {
     } elseif($package -eq "thrust" -and [version]$CUDA_VERSION_FULL -lt [version]"11.3") {
         # Thrust is a package from CUDA 11.3, otherwise it should be skipped.
         continue
+    } elseif($package -eq "nvjitlink" -and [version]$CUDA_VERSION_FULL -lt [version]"12.0") {
+        # nvjitlink is a from CUDA 12.0, otherwise it should be skipped.
+        continue
+    } elseif($package -eq "crt" -and [version]$CUDA_VERSION_FULL -lt [version]"13.0") {
+        # crt is a from CUDA 13.0, otherwise it should be skipped.
+        continue
+    } elseif($package -eq "nvptxcompiler" -and [version]$CUDA_VERSION_FULL -lt [version]"13.0") {
+        # nvptxcompiler is a from CUDA 13.0, otherwise it should be skipped.
+        continue
+    } elseif($package -eq "nvvm" -and [version]$CUDA_VERSION_FULL -lt [version]"13.0") {
+        # nvvm is a from CUDA 13.0, otherwise it should be skipped.
+        continue
     }
     $CUDA_PACKAGES += " $($package)_$($CUDA_MAJOR).$($CUDA_MINOR)"
 }
@@ -160,7 +188,7 @@ while (-not $downloaded) {
         Write-Output "Downloading Complete"
         $downloaded=$true
     } else {
-        # If downlaod failed, either wait and try again, or give up and error.
+        # If download failed, either wait and try again, or give up and error.
         if ($download_attempt -le $download_attempts_max) {
             Write-Output "Error: Failed to download $($CUDA_REPO_PKG_LOCAL) (attempt $($download_attempt)/$($download_attempts_max)). Retrying."
             # Sleep for a number of seconds.
