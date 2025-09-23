@@ -67,11 +67,11 @@ jobs:
             redist: "false"
             visual_studio: "Visual Studio 17 2022"
           - os: windows-2022
-            cuda: "11.6.1"
+            cuda: "12.0.0"
             redist: "true"
             visual_studio: "Visual Studio 17 2022"
           - os: windows-2022
-            cuda: "11.6.1"
+            cuda: "12.0.0"
             redist: "false"
             visual_studio: "Visual Studio 17 2022"
     env:
