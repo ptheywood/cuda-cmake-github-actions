@@ -16,28 +16,29 @@ jobs:
       fail-fast: false
       # explicit include-based build matrix, of known valid options
       matrix:
+        redist:
+          - "true"
+          - "false"
         include:
           # Windows-2022 & VS 2022 supports 12.4 without any workarounds
           - os: windows-2022
             cuda: "13.0.1"
-            redist: "true"
-            visual_studio: "Visual Studio 17 2022"
-          - os: windows-2022
-            cuda: "13.0.1"
-            redist: "false"
             visual_studio: "Visual Studio 17 2022"
           - os: windows-2022
             cuda: "12.9.1"
-            redist: "true"
             visual_studio: "Visual Studio 17 2022"
           - os: windows-2022
-            cuda: "12.9.1"
-            redist: "false"
+            cuda: "12.8.0"
             visual_studio: "Visual Studio 17 2022"
-          # - os: windows-2022
-          #   cuda: "12.4.0"
-          #   redist: "false"
-          #   visual_studio: "Visual Studio 17 2022"
+          - os: windows-2022
+            cuda: "12.6.3"
+            visual_studio: "Visual Studio 17 2022"
+          - os: windows-2022
+            cuda: "12.5.1"
+            visual_studio: "Visual Studio 17 2022"
+          - os: windows-2022
+            cuda: "12.4.0"
+            visual_studio: "Visual Studio 17 2022"
     env:
       build_dir: "build"
       config: "Release"
