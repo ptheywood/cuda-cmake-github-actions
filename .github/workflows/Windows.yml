@@ -66,9 +66,19 @@ jobs:
             cuda: "12.4.0"
             redist: "false"
             visual_studio: "Visual Studio 17 2022"
+          - os: windows-2022
+            cuda: "11.6.1"
+            redist: "true"
+            visual_studio: "Visual Studio 17 2022"
+          - os: windows-2022
+            cuda: "11.6.1"
+            redist: "false"
+            visual_studio: "Visual Studio 17 2022"
     env:
       build_dir: "build"
       config: "Release"
+      # Ensure MSVC >= 1940 works with CUDA <= 12.3
+      NVCC_PREPEND_FLAGS: "-D_ALLOW_COMPILER_AND_STL_VERSION_MISMATCH --allow-unsupported-compiler"
 
     steps:
     - uses: actions/checkout@v3
