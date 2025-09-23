@@ -74,6 +74,11 @@ jobs:
             cuda: "12.0.0"
             redist: "false"
             visual_studio: "Visual Studio 17 2022"
+          # Check redist 11.x behaves, by not being redist
+          - os: windows-2022
+            cuda: "11.6.1"
+            redist: "true"
+            visual_studio: "Visual Studio 17 2022"
     env:
       build_dir: "build"
       config: "Release"
@@ -97,7 +102,12 @@ jobs:
         cuda: ${{ matrix.cuda }}
         visual_studio: ${{ matrix.visual_studio }}
       shell: pwsh
-      run: .\scripts\actions\install_cuda_windows_redist.ps1
+      run: |
+        if ([version]$env:cuda -ge [version]"12.0") {
+          .\scripts\actions\install_cuda_windows_redist.ps1
+        } else {
+          .\scripts\actions\install_cuda_windows.ps1
+        }
 
     - name: nvcc check
       shell: powershell
