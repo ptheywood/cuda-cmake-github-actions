@@ -107,14 +107,6 @@ jobs:
         ls $env:CUDA_PATH\bin
         ls $env:CUDA_PATH\include
 
-    - name: Enable Developer Command Prompt
-      uses: ilammy/msvc-dev-cmd@v1.13.0
-
-    - name: manual nvcc
-      shell: bash
-      run: |
-        nvcc -o main src/main.cu -Iinclude -Imain -std=c++14
-
     - name: cmake version
       shell: bash
       run: cmake --version
